@@ -51,6 +51,8 @@
 
 #define _XTAL_FREQ 20000000UL
 
+#include "comp_dac.h"
+
 void init()
 {
   // setup ports
@@ -61,7 +63,7 @@ void init()
   TRISE = 0b11111100;
 
   ANSELA = 0; // PORTA all digital
-  ANSELB = 0; // PORTB all digital
+  ANSELB = 0b00010000; // PORTB all digital except RB4 analog
   ANSELC = 0; // PORTC all digital
 
   // setup EUSART
@@ -73,7 +75,8 @@ void init()
   RCSTA1bits.CREN = 1;
   TXSTA1bits.BRGH = 1;
   BAUDCON1bits.BRG16 = 1;
-  SP1BRG = 42; // 115.2k @ 20 MHz clock
+  //SP1BRG = 42; // 115.2k @ 20 MHz clock
+  SP1BRG = 21; // 230.4k @ 20 MHz clock
 
   // setup MSSP for SPI master
   RB1PPS = 0x17;  // SCK2
@@ -127,6 +130,20 @@ void init()
   T1GCONbits.GE = 0; // disable timer 1 gating
 #endif
 
+
+  // enable internal temperature sensor
+  FVRCONbits.TSEN = 1; // enable temp. sensor
+  FVRCONbits.TSRNG = 1; // high range for more resolution
+
+  // setup fixed voltage reference
+  FVRCONbits.FVREN = 1; // enable fixed voltage reference
+  FVRCONbits.ADFVR = 0b10; // 2.048 V output for ADC ref
+
+  // setup ADC
+  ADCON0bits.ADON = 1; // enable ADC
+  ADCON1bits.ADFM = 1; // right justified result
+  ADCON1bits.ADCS = 0b110; // 3.2 us conversion @ 20 MHz
+  ADCON1bits.ADPREF = 0b11; // Vref uses FVR
 }
 
 void putchar(char c)
@@ -213,6 +230,54 @@ void count_frequency()
   send_ascii_int(((uint32_t)timer1_overflow_count << 16) | ((uint32_t)TMR1H << 8) | TMR1L);
 }
 
+uint16_t read_NVM(uint16_t address)
+{
+  NVMCON1bits.NVMREGS = 1; // access DIA
+  NVMADRH = (address & 0xff00) >> 8;
+  NVMADRL = address & 0x00ff;
+  NVMCON1bits.RD = 1;
+  return (((uint16_t)NVMDATH) << 8) | NVMDATL;
+}
+
+uint16_t measure_temperature()
+{
+  float sum = 0;
+  ADCON0bits.CHS = 0b111100; // select temp. sensor
+  __delay_ms(1);
+  for (uint8_t i=0; i<10; i++){
+    ADCON0bits.GOnDONE = 1;
+    while(ADCON0bits.GOnDONE){
+      continue;
+    }
+
+    uint16_t value = ((uint16_t)ADRESH << 8) | ADRESL;
+    float ft = 90.f + (((float)value - read_NVM(DIA_TSHR2))*read_NVM(DIA_FVRA2X))/
+      (-3.684f*1023);
+    sum += ft;
+  }
+  uint16_t t = 10*sum;
+  return t;
+}
+
+uint16_t external_temperature()
+{
+  ADCON0bits.CHS = 0b001100; // select RB4
+  __delay_ms(1);
+
+  float sum = 0;
+  for (uint8_t i=0; i<10; i++){
+    ADCON0bits.GOnDONE = 1;
+    while(ADCON0bits.GOnDONE){
+      continue;
+    }
+
+    uint16_t value = ((uint16_t)ADRESH << 8) | ADRESL;
+    float ft = ((float)value * read_NVM(DIA_FVRA2X)) / 1023 - 500;
+    sum += ft;
+  }
+  return sum;
+}
+
 // include 74LVC prescaling bits
 uint32_t measure_gated_osc(void)
 {
@@ -237,7 +302,9 @@ uint32_t measure_gated_osc(void)
   asm("BANKSEL PORTA");
   asm("BCF PORTA, 0"); // enable delay-line osc
 
-  _delay(_XTAL_FREQ/4 - 2); // delay 1s
+  //_delay(_XTAL_FREQ/4 - 2); // delay 1s
+  _delay(_XTAL_FREQ/40 - 2); // delay 100ms
+  //_delay(_XTAL_FREQ/400 - 2); // delay 10ms
 
   asm("BANKSEL PORTA");
   asm("BSF PORTA, 0"); // disable delay-line osc
@@ -271,20 +338,121 @@ void set_fine_tune(int16_t value)
 void main(void) {
   init();
 
+//#define MEASURE_DIGITAL
+//#define MEASURE_ANALOG
+//#define MEASURE_BOTH
+#define TEST_TEMP_COMP
+
+#ifdef MEASURE_DIGITAL
   while(1){
     for (uint16_t delay_val = 0 ; delay_val < 1024; delay_val++){
       uint16_t tune_val = 0;
       set_fine_tune(tune_val);
       set_delay(delay_val);
-      uint32_t freq = measure_gated_osc();
       send_ascii_int(delay_val);
       putchar(' ');
       send_ascii_int(tune_val);
       putchar(' ');
+      uint32_t freq = measure_gated_osc();
       send_ascii_int(freq);
+      putchar(' ');
+      uint16_t t = measure_temperature();
+      send_ascii_int(t);
       putchar('\n');
     }
   }
+#endif // MEASURE_DIGITAL
+
+
+#ifdef MEASURE_ANALOG
+  while(1){
+    for (uint16_t tune_val = 0 ; tune_val < 4096; tune_val++){
+      uint16_t delay_val = 0;
+      set_fine_tune(tune_val);
+      set_delay(delay_val);
+      send_ascii_int(delay_val);
+      putchar(' ');
+      send_ascii_int(tune_val);
+      putchar(' ');
+      uint32_t freq = measure_gated_osc();
+      send_ascii_int(freq);
+      putchar(' ');
+      uint16_t t = measure_temperature();
+      send_ascii_int(t);
+      putchar(' ');
+      t = external_temperature();
+      send_ascii_int(t);
+      putchar('\n');
+    }
+  }
+#endif // MEASURE_DIGITAL
+
+#ifdef MEASURE_BOTH
+  while(1){
+    for (uint16_t idx = 1; idx <= 1024; idx <<= 1){
+      uint16_t delay_val = idx >> 1;
+      uint16_t tune_val = 0;
+      set_fine_tune(tune_val);
+      set_delay(delay_val);
+      send_ascii_int(delay_val);
+      putchar(' ');
+      send_ascii_int(tune_val);
+      putchar(' ');
+      uint32_t freq = measure_gated_osc();
+      send_ascii_int(freq);
+      putchar(' ');
+      uint16_t t = measure_temperature();
+      send_ascii_int(t);
+      putchar(' ');
+      t = external_temperature();
+      send_ascii_int(t);
+      putchar('\n');
+    }
+    for (uint16_t tune_val = 0 ; tune_val < 4096; tune_val += 100){
+      uint16_t delay_val = 1023;
+      set_fine_tune(tune_val);
+      set_delay(delay_val);
+      send_ascii_int(delay_val);
+      putchar(' ');
+      send_ascii_int(tune_val);
+      putchar(' ');
+      uint32_t freq = measure_gated_osc();
+      send_ascii_int(freq);
+      putchar(' ');
+      uint16_t t = measure_temperature();
+      send_ascii_int(t);
+      putchar(' ');
+      t = external_temperature();
+      send_ascii_int(t);
+      putchar('\n');
+    }
+  }
+#endif // MEASURE_BOTH
+
+#ifdef TEST_TEMP_COMP
+  while(1){
+    uint16_t t = external_temperature();
+    int16_t idx = (t-3800);
+    if (idx > 399) idx = 399;
+    if (idx < 0) idx = 0;
+    uint16_t tune_val = temp_comp_LUT[idx];
+    set_fine_tune(tune_val);
+    uint16_t delay_val = 1023;
+    set_delay(delay_val);
+    send_ascii_int(delay_val);
+    putchar(' ');
+    send_ascii_int(tune_val);
+    putchar(' ');
+    uint32_t freq = measure_gated_osc();
+    send_ascii_int(freq);
+    putchar(' ');
+    uint16_t int_t = measure_temperature();
+    send_ascii_int(int_t);
+    putchar(' ');
+    send_ascii_int(t);
+    putchar('\n');
+  }
+#endif // TEST_TEMP_COMP
 
   return;
 }

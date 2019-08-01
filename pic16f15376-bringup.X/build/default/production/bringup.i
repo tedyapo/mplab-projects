@@ -13345,6 +13345,411 @@ typedef uint32_t uint_fast32_t;
 
 
 
+# 1 "./comp_dac.h" 1
+uint16_t temp_comp_LUT[400] = {
+   80 ,
+   84 ,
+   89 ,
+   93 ,
+   98 ,
+   102 ,
+   107 ,
+   111 ,
+   115 ,
+   120 ,
+   124 ,
+   129 ,
+   133 ,
+   137 ,
+   142 ,
+   146 ,
+   151 ,
+   155 ,
+   159 ,
+   164 ,
+   168 ,
+   172 ,
+   177 ,
+   181 ,
+   185 ,
+   190 ,
+   194 ,
+   198 ,
+   203 ,
+   207 ,
+   211 ,
+   216 ,
+   220 ,
+   224 ,
+   229 ,
+   233 ,
+   237 ,
+   242 ,
+   246 ,
+   250 ,
+   255 ,
+   259 ,
+   263 ,
+   268 ,
+   272 ,
+   276 ,
+   281 ,
+   285 ,
+   289 ,
+   294 ,
+   298 ,
+   302 ,
+   307 ,
+   311 ,
+   315 ,
+   320 ,
+   324 ,
+   328 ,
+   333 ,
+   337 ,
+   342 ,
+   346 ,
+   350 ,
+   355 ,
+   359 ,
+   363 ,
+   368 ,
+   372 ,
+   377 ,
+   381 ,
+   385 ,
+   390 ,
+   394 ,
+   399 ,
+   403 ,
+   407 ,
+   412 ,
+   416 ,
+   421 ,
+   425 ,
+   430 ,
+   434 ,
+   439 ,
+   443 ,
+   448 ,
+   452 ,
+   457 ,
+   461 ,
+   466 ,
+   470 ,
+   475 ,
+   479 ,
+   484 ,
+   488 ,
+   493 ,
+   498 ,
+   502 ,
+   507 ,
+   511 ,
+   516 ,
+   521 ,
+   525 ,
+   530 ,
+   535 ,
+   539 ,
+   544 ,
+   549 ,
+   553 ,
+   558 ,
+   563 ,
+   568 ,
+   572 ,
+   577 ,
+   582 ,
+   587 ,
+   592 ,
+   596 ,
+   601 ,
+   606 ,
+   611 ,
+   616 ,
+   621 ,
+   626 ,
+   631 ,
+   635 ,
+   640 ,
+   645 ,
+   650 ,
+   655 ,
+   660 ,
+   665 ,
+   670 ,
+   676 ,
+   681 ,
+   686 ,
+   691 ,
+   696 ,
+   701 ,
+   706 ,
+   711 ,
+   717 ,
+   722 ,
+   727 ,
+   732 ,
+   738 ,
+   743 ,
+   748 ,
+   753 ,
+   759 ,
+   764 ,
+   769 ,
+   775 ,
+   780 ,
+   786 ,
+   791 ,
+   797 ,
+   802 ,
+   808 ,
+   813 ,
+   819 ,
+   824 ,
+   830 ,
+   835 ,
+   841 ,
+   847 ,
+   852 ,
+   858 ,
+   864 ,
+   870 ,
+   875 ,
+   881 ,
+   887 ,
+   893 ,
+   899 ,
+   905 ,
+   910 ,
+   916 ,
+   922 ,
+   928 ,
+   934 ,
+   940 ,
+   946 ,
+   952 ,
+   959 ,
+   965 ,
+   971 ,
+   977 ,
+   983 ,
+   989 ,
+   996 ,
+   1002 ,
+   1008 ,
+   1015 ,
+   1021 ,
+   1027 ,
+   1034 ,
+   1040 ,
+   1047 ,
+   1053 ,
+   1060 ,
+   1066 ,
+   1073 ,
+   1079 ,
+   1086 ,
+   1093 ,
+   1099 ,
+   1106 ,
+   1113 ,
+   1120 ,
+   1126 ,
+   1133 ,
+   1140 ,
+   1147 ,
+   1154 ,
+   1161 ,
+   1168 ,
+   1175 ,
+   1182 ,
+   1189 ,
+   1196 ,
+   1203 ,
+   1210 ,
+   1218 ,
+   1225 ,
+   1232 ,
+   1239 ,
+   1247 ,
+   1254 ,
+   1261 ,
+   1269 ,
+   1276 ,
+   1284 ,
+   1291 ,
+   1299 ,
+   1306 ,
+   1314 ,
+   1322 ,
+   1329 ,
+   1337 ,
+   1345 ,
+   1353 ,
+   1361 ,
+   1368 ,
+   1376 ,
+   1384 ,
+   1392 ,
+   1400 ,
+   1408 ,
+   1416 ,
+   1424 ,
+   1433 ,
+   1441 ,
+   1449 ,
+   1457 ,
+   1466 ,
+   1474 ,
+   1482 ,
+   1491 ,
+   1499 ,
+   1508 ,
+   1516 ,
+   1525 ,
+   1533 ,
+   1542 ,
+   1551 ,
+   1559 ,
+   1568 ,
+   1577 ,
+   1586 ,
+   1595 ,
+   1604 ,
+   1613 ,
+   1622 ,
+   1631 ,
+   1640 ,
+   1649 ,
+   1658 ,
+   1667 ,
+   1676 ,
+   1686 ,
+   1695 ,
+   1704 ,
+   1714 ,
+   1723 ,
+   1733 ,
+   1742 ,
+   1752 ,
+   1762 ,
+   1771 ,
+   1781 ,
+   1791 ,
+   1800 ,
+   1810 ,
+   1820 ,
+   1830 ,
+   1840 ,
+   1850 ,
+   1860 ,
+   1870 ,
+   1880 ,
+   1891 ,
+   1901 ,
+   1911 ,
+   1921 ,
+   1932 ,
+   1942 ,
+   1953 ,
+   1963 ,
+   1974 ,
+   1984 ,
+   1995 ,
+   2006 ,
+   2017 ,
+   2027 ,
+   2038 ,
+   2049 ,
+   2060 ,
+   2071 ,
+   2082 ,
+   2093 ,
+   2104 ,
+   2115 ,
+   2127 ,
+   2138 ,
+   2149 ,
+   2161 ,
+   2172 ,
+   2184 ,
+   2195 ,
+   2207 ,
+   2218 ,
+   2230 ,
+   2242 ,
+   2254 ,
+   2265 ,
+   2277 ,
+   2289 ,
+   2301 ,
+   2313 ,
+   2325 ,
+   2338 ,
+   2350 ,
+   2362 ,
+   2374 ,
+   2387 ,
+   2399 ,
+   2411 ,
+   2424 ,
+   2437 ,
+   2449 ,
+   2462 ,
+   2475 ,
+   2487 ,
+   2500 ,
+   2513 ,
+   2526 ,
+   2539 ,
+   2552 ,
+   2565 ,
+   2578 ,
+   2592 ,
+   2605 ,
+   2618 ,
+   2632 ,
+   2645 ,
+   2659 ,
+   2672 ,
+   2686 ,
+   2699 ,
+   2713 ,
+   2727 ,
+   2741 ,
+   2755 ,
+   2769 ,
+   2783 ,
+   2797 ,
+   2811 ,
+   2825 ,
+   2839 ,
+   2854 ,
+   2868 ,
+   2883 ,
+   2897 ,
+   2912 ,
+   2926 ,
+   2941 ,
+   2956 ,
+   2970 ,
+   2985 ,
+   3000 ,
+   3015 ,
+   3030 ,
+   3045 ,
+   3060 ,
+   3076 ,
+   3091 ,
+   3106 ,
+   3122 ,
+   3137 ,
+   3153 ,
+};
+# 55 "bringup.c" 2
+
 void init()
 {
 
@@ -13355,7 +13760,7 @@ void init()
   TRISE = 0b11111100;
 
   ANSELA = 0;
-  ANSELB = 0;
+  ANSELB = 0b00010000;
   ANSELC = 0;
 
 
@@ -13367,7 +13772,8 @@ void init()
   RCSTA1bits.CREN = 1;
   TXSTA1bits.BRGH = 1;
   BAUDCON1bits.BRG16 = 1;
-  SP1BRG = 42;
+
+  SP1BRG = 21;
 
 
   RB1PPS = 0x17;
@@ -13379,7 +13785,7 @@ void init()
   SSP2CON1bits.CKP = 0;
   SSP2STATbits.CKE = 1;
   LATBbits.LATB0 = 1;
-# 114 "bringup.c"
+# 117 "bringup.c"
   T0CKIPPSbits.T0CKIPPS = 0x04;
   T0CON0bits.T016BIT = 1;
   T0CON0bits.T0OUTPS = 0b000;
@@ -13396,6 +13802,20 @@ void init()
   T1GCONbits.GE = 0;
 
 
+
+
+  FVRCONbits.TSEN = 1;
+  FVRCONbits.TSRNG = 1;
+
+
+  FVRCONbits.FVREN = 1;
+  FVRCONbits.ADFVR = 0b10;
+
+
+  ADCON0bits.ADON = 1;
+  ADCON1bits.ADFM = 1;
+  ADCON1bits.ADCS = 0b110;
+  ADCON1bits.ADPREF = 0b11;
 }
 
 void putchar(char c)
@@ -13482,6 +13902,54 @@ void count_frequency()
   send_ascii_int(((uint32_t)timer1_overflow_count << 16) | ((uint32_t)TMR1H << 8) | TMR1L);
 }
 
+uint16_t read_NVM(uint16_t address)
+{
+  NVMCON1bits.NVMREGS = 1;
+  NVMADRH = (address & 0xff00) >> 8;
+  NVMADRL = address & 0x00ff;
+  NVMCON1bits.RD = 1;
+  return (((uint16_t)NVMDATH) << 8) | NVMDATL;
+}
+
+uint16_t measure_temperature()
+{
+  float sum = 0;
+  ADCON0bits.CHS = 0b111100;
+  _delay((unsigned long)((1)*(20000000UL/4000.0)));
+  for (uint8_t i=0; i<10; i++){
+    ADCON0bits.GOnDONE = 1;
+    while(ADCON0bits.GOnDONE){
+      continue;
+    }
+
+    uint16_t value = ((uint16_t)ADRESH << 8) | ADRESL;
+    float ft = 90.f + (((float)value - read_NVM(0x8116))*read_NVM(0x8119))/
+      (-3.684f*1023);
+    sum += ft;
+  }
+  uint16_t t = 10*sum;
+  return t;
+}
+
+uint16_t external_temperature()
+{
+  ADCON0bits.CHS = 0b001100;
+  _delay((unsigned long)((1)*(20000000UL/4000.0)));
+
+  float sum = 0;
+  for (uint8_t i=0; i<10; i++){
+    ADCON0bits.GOnDONE = 1;
+    while(ADCON0bits.GOnDONE){
+      continue;
+    }
+
+    uint16_t value = ((uint16_t)ADRESH << 8) | ADRESL;
+    float ft = ((float)value * read_NVM(0x8119)) / 1023 - 500;
+    sum += ft;
+  }
+  return sum;
+}
+
 
 uint32_t measure_gated_osc(void)
 {
@@ -13506,7 +13974,9 @@ uint32_t measure_gated_osc(void)
   __asm("BANKSEL PORTA");
   __asm("BCF PORTA, 0");
 
-  _delay(20000000UL/4 - 2);
+
+  _delay(20000000UL/40 - 2);
+
 
   __asm("BANKSEL PORTA");
   __asm("BSF PORTA, 0");
@@ -13539,21 +14009,30 @@ void set_fine_tune(int16_t value)
 
 void main(void) {
   init();
-
+# 433 "bringup.c"
   while(1){
-    for (uint16_t delay_val = 0 ; delay_val < 1024; delay_val++){
-      uint16_t tune_val = 0;
-      set_fine_tune(tune_val);
-      set_delay(delay_val);
-      uint32_t freq = measure_gated_osc();
-      send_ascii_int(delay_val);
-      putchar(' ');
-      send_ascii_int(tune_val);
-      putchar(' ');
-      send_ascii_int(freq);
-      putchar('\n');
-    }
+    uint16_t t = external_temperature();
+    int16_t idx = (t-3800);
+    if (idx > 399) idx = 399;
+    if (idx < 0) idx = 0;
+    uint16_t tune_val = temp_comp_LUT[idx];
+    set_fine_tune(tune_val);
+    uint16_t delay_val = 1023;
+    set_delay(delay_val);
+    send_ascii_int(delay_val);
+    putchar(' ');
+    send_ascii_int(tune_val);
+    putchar(' ');
+    uint32_t freq = measure_gated_osc();
+    send_ascii_int(freq);
+    putchar(' ');
+    uint16_t int_t = measure_temperature();
+    send_ascii_int(int_t);
+    putchar(' ');
+    send_ascii_int(t);
+    putchar('\n');
   }
+
 
   return;
 }

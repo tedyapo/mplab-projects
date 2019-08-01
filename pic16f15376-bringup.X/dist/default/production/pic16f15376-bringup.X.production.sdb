@@ -6,41 +6,59 @@
 "5 /opt/microchip/xc8/v2.05/pic/sources/c99/common/__lldiv.c
 [v ___lldiv __lldiv `(ul  1 e 4 0 ]
 "87 /opt/microchip/xc8/v2.05/pic/include/c99/stdlib.h
-[s S610 . 8 `ul 1 quot 4 0 `ul 1 rem 4 4 ]
+[s S696 . 8 `ul 1 quot 4 0 `ul 1 rem 4 4 ]
 "4 /opt/microchip/xc8/v2.05/pic/sources/c99/common/culdiv.c
-[v _uldiv uldiv `(S610  1 e 8 0 ]
+[v _uldiv uldiv `(S696  1 e 8 0 ]
+"43 /opt/microchip/xc8/v2.05/pic/sources/c99/common/fltol.c
+[v ___fltol __fltol `(l  1 e 4 0 ]
 "5 /opt/microchip/xc8/v2.05/pic/sources/c99/common/llmod.c
 [v ___llmod __llmod `(ul  1 e 4 0 ]
 "10 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcadd.c
 [v ___fladd __fladd `(d  1 e 4 0 ]
+"242
+[v ___flsub __flsub `(d  1 e 4 0 ]
+"8 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 4 0 ]
+"8 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcmul.c
+[v ___flmul __flmul `(d  1 e 4 0 ]
 "4 /opt/microchip/xc8/v2.05/pic/sources/c99/common/Umul8_16.c
 [v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
-"54 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"10 /opt/microchip/xc8/v2.05/pic/sources/c99/common/xxtofl.c
+[v ___xxtofl __xxtofl `(d  1 e 4 0 ]
+"56 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
 [v _init init `(v  1 e 1 0 ]
-"132
+"149
 [v _putchar putchar `(v  1 e 1 0 ]
-"138
+"155
 [v _send_hex send_hex `(v  1 e 1 0 ]
-"151
+"168
 [v _send_ascii_int send_ascii_int `(v  1 e 1 0 ]
-"187
+"204
 [v _ISR ISR `II(v  1 e 1 0 ]
-"217
+"233
+[v _read_NVM read_NVM `(us  1 e 2 0 ]
+"242
+[v _measure_temperature measure_temperature `(us  1 e 2 0 ]
+"262
+[v _external_temperature external_temperature `(us  1 e 2 0 ]
+"282
 [v _measure_gated_osc measure_gated_osc `(ul  1 e 4 0 ]
-"254
+"321
 [v _set_delay set_delay `(v  1 e 1 0 ]
-"260
+"327
 [v _set_fine_tune set_fine_tune `(v  1 e 1 0 ]
-"271
+"338
 [v _main main `(v  1 e 1 0 ]
-[s S654 . 1 `uc 1 INTEDG 1 0 :1:0 
+"1 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/comp_dac.h
+[v _temp_comp_LUT temp_comp_LUT `[400]us  1 e 800 @9424 ]
+[s S771 . 1 `uc 1 INTEDG 1 0 :1:0 
 `uc 1 . 1 0 :5:1 
 `uc 1 PEIE 1 0 :1:6 
 `uc 1 GIE 1 0 :1:7 
 ]
 "426 /opt/microchip/xc8/v2.05/pic/include/pic16f15376.h
-[u S659 . 1 `S654 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES659  1 e 1 @11 ]
+[u S776 . 1 `S771 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES776  1 e 1 @11 ]
 "570
 [v _PORTC PORTC `VEuc  1 e 1 @14 ]
 "732
@@ -53,7 +71,7 @@
 [v _TRISD TRISD `VEuc  1 e 1 @21 ]
 "980
 [v _TRISE TRISE `VEuc  1 e 1 @22 ]
-[s S667 . 1 `uc 1 LATA0 1 0 :1:0 
+[s S784 . 1 `uc 1 LATA0 1 0 :1:0 
 `uc 1 LATA1 1 0 :1:1 
 `uc 1 LATA2 1 0 :1:2 
 `uc 1 LATA3 1 0 :1:3 
@@ -63,8 +81,8 @@
 `uc 1 LATA7 1 0 :1:7 
 ]
 "1035
-[u S676 . 1 `S667 1 . 1 0 ]
-[v _LATAbits LATAbits `VES676  1 e 1 @24 ]
+[u S793 . 1 `S784 1 . 1 0 ]
+[v _LATAbits LATAbits `VES793  1 e 1 @24 ]
 [s S355 . 1 `uc 1 LATB0 1 0 :1:0 
 `uc 1 LATB1 1 0 :1:1 
 `uc 1 LATB2 1 0 :1:2 
@@ -77,7 +95,7 @@
 "1097
 [u S364 . 1 `S355 1 . 1 0 ]
 [v _LATBbits LATBbits `VES364  1 e 1 @25 ]
-[s S688 . 1 `uc 1 LATC0 1 0 :1:0 
+[s S805 . 1 `uc 1 LATC0 1 0 :1:0 
 `uc 1 LATC1 1 0 :1:1 
 `uc 1 LATC2 1 0 :1:2 
 `uc 1 LATC3 1 0 :1:3 
@@ -87,12 +105,47 @@
 `uc 1 LATC7 1 0 :1:7 
 ]
 "1159
-[u S697 . 1 `S688 1 . 1 0 ]
-[v _LATCbits LATCbits `VES697  1 e 1 @26 ]
+[u S814 . 1 `S805 1 . 1 0 ]
+[v _LATCbits LATCbits `VES814  1 e 1 @26 ]
 "1204
 [v _LATD LATD `VEuc  1 e 1 @27 ]
 "1266
 [v _LATE LATE `VEuc  1 e 1 @28 ]
+"1305
+[v _ADRESL ADRESL `VEuc  1 e 1 @155 ]
+"1375
+[v _ADRESH ADRESH `VEuc  1 e 1 @156 ]
+[s S616 . 1 `uc 1 ADON 1 0 :1:0 
+`uc 1 GOnDONE 1 0 :1:1 
+`uc 1 CHS0 1 0 :1:2 
+`uc 1 CHS1 1 0 :1:3 
+`uc 1 CHS2 1 0 :1:4 
+`uc 1 CHS3 1 0 :1:5 
+`uc 1 CHS4 1 0 :1:6 
+`uc 1 CHS5 1 0 :1:7 
+]
+"1467
+[s S625 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO 1 0 :1:1 
+`uc 1 CHS 1 0 :6:2 
+]
+[u S629 . 1 `S616 1 . 1 0 `S625 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES629  1 e 1 @157 ]
+[s S646 . 1 `uc 1 ADPREF0 1 0 :1:0 
+`uc 1 ADPREF1 1 0 :1:1 
+`uc 1 . 1 0 :2:2 
+`uc 1 ADCS0 1 0 :1:4 
+`uc 1 ADCS1 1 0 :1:5 
+`uc 1 ADCS2 1 0 :1:6 
+`uc 1 ADFM 1 0 :1:7 
+]
+"1543
+[s S654 . 1 `uc 1 ADPREF 1 0 :2:0 
+`uc 1 . 1 0 :2:2 
+`uc 1 ADCS 1 0 :3:4 
+]
+[u S658 . 1 `S646 1 . 1 0 `S654 1 . 1 0 ]
+[v _ADCON1bits ADCON1bits `VES658  1 e 1 @158 ]
 "1640
 [v _RC1REG RC1REG `VEuc  1 e 1 @281 ]
 "1694
@@ -357,7 +410,7 @@
 ]
 [u S444 . 1 `S424 1 . 1 0 `S428 1 . 1 0 `S437 1 . 1 0 `S442 1 . 1 0 ]
 [v _T0CON1bits T0CON1bits `VES444  1 e 1 @1439 ]
-[s S588 . 1 `uc 1 SSP1IF 1 0 :1:0 
+[s S674 . 1 `uc 1 SSP1IF 1 0 :1:0 
 `uc 1 BCL1IF 1 0 :1:1 
 `uc 1 SSP2IF 1 0 :1:2 
 `uc 1 BCL2IF 1 0 :1:3 
@@ -367,14 +420,48 @@
 `uc 1 RC2IF 1 0 :1:7 
 ]
 "9418
-[u S597 . 1 `S588 1 . 1 0 ]
-[v _PIR3bits PIR3bits `VES597  1 e 1 @1807 ]
-[s S641 . 1 `uc 1 TMR1IF 1 0 :1:0 
+[u S683 . 1 `S674 1 . 1 0 ]
+[v _PIR3bits PIR3bits `VES683  1 e 1 @1807 ]
+[s S727 . 1 `uc 1 TMR1IF 1 0 :1:0 
 `uc 1 TMR2IF 1 0 :1:1 
 ]
 "9474
-[u S644 . 1 `S641 1 . 1 0 ]
-[v _PIR4bits PIR4bits `VES644  1 e 1 @1808 ]
+[u S730 . 1 `S727 1 . 1 0 ]
+[v _PIR4bits PIR4bits `VES730  1 e 1 @1808 ]
+"10825
+[v _NVMADRL NVMADRL `VEuc  1 e 1 @2074 ]
+"10887
+[v _NVMADRH NVMADRH `VEuc  1 e 1 @2075 ]
+"10950
+[v _NVMDATL NVMDATL `VEuc  1 e 1 @2076 ]
+"11012
+[v _NVMDATH NVMDATH `VEuc  1 e 1 @2077 ]
+[s S740 . 1 `uc 1 RD 1 0 :1:0 
+`uc 1 WR 1 0 :1:1 
+`uc 1 WREN 1 0 :1:2 
+`uc 1 WRERR 1 0 :1:3 
+`uc 1 FREE 1 0 :1:4 
+`uc 1 LWLO 1 0 :1:5 
+`uc 1 NVMREGS 1 0 :1:6 
+]
+"11078
+[u S748 . 1 `S740 1 . 1 0 ]
+[v _NVMCON1bits NVMCON1bits `VES748  1 e 1 @2078 ]
+[s S588 . 1 `uc 1 ADFVR 1 0 :2:0 
+`uc 1 CDAFVR 1 0 :2:2 
+`uc 1 TSRNG 1 0 :1:4 
+`uc 1 TSEN 1 0 :1:5 
+`uc 1 FVRRDY 1 0 :1:6 
+`uc 1 FVREN 1 0 :1:7 
+]
+"11721
+[s S595 . 1 `uc 1 ADFVR0 1 0 :1:0 
+`uc 1 ADFVR1 1 0 :1:1 
+`uc 1 CDAFVR0 1 0 :1:2 
+`uc 1 CDAFVR1 1 0 :1:3 
+]
+[u S600 . 1 `S588 1 . 1 0 `S595 1 . 1 0 ]
+[v _FVRCONbits FVRCONbits `VES600  1 e 1 @2316 ]
 [s S376 . 1 `uc 1 T0CKIPPS 1 0 :6:0 
 ]
 "17460
@@ -411,50 +498,56 @@
 [v _ANSELB ANSELB `VEuc  1 e 1 @8003 ]
 "21250
 [v _ANSELC ANSELC `VEuc  1 e 1 @8014 ]
-"185 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"202 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
 [v _timer1_overflow_count timer1_overflow_count `uc  1 e 1 0 ]
-"271
+"338
 [v _main main `(v  1 e 1 0 ]
 {
-"279
-[v main@freq freq `ul  1 a 4 38 ]
-"275
-[v main@delay_val delay_val `us  1 a 2 44 ]
-"290
+"446
+[v main@freq freq `ul  1 a 4 42 ]
+"435
+[v main@idx idx `s  1 a 2 54 ]
+"438
+[v main@tune_val tune_val `us  1 a 2 50 ]
+"434
+[v main@t t `us  1 a 2 48 ]
+"449
+[v main@int_t int_t `us  1 a 2 46 ]
+"458
 } 0
-"260
+"327
 [v _set_fine_tune set_fine_tune `(v  1 e 1 0 ]
 {
 [v set_fine_tune@value value `s  1 p 2 1 ]
-"269
+"336
 } 0
-"254
+"321
 [v _set_delay set_delay `(v  1 e 1 0 ]
 {
 [v set_delay@value value `s  1 p 2 1 ]
-"258
+"325
 } 0
-"151
+"168
 [v _send_ascii_int send_ascii_int `(v  1 e 1 0 ]
 {
-[s S610 . 8 `ul 1 quot 4 0 `ul 1 rem 4 4 ]
-"153
-[v send_ascii_int@x x `S610  1 a 8 26 ]
-"155
+[s S696 . 8 `ul 1 quot 4 0 `ul 1 rem 4 4 ]
+"170
+[v send_ascii_int@x x `S696  1 a 8 26 ]
+"172
 [v send_ascii_int@place place `ul  1 a 4 34 ]
-"154
+"171
 [v send_ascii_int@leading_found leading_found `uc  1 a 1 25 ]
-"151
+"168
 [v send_ascii_int@value value `ul  1 p 4 21 ]
-"166
+"183
 } 0
 "87 /opt/microchip/xc8/v2.05/pic/include/c99/stdlib.h
-[s S610 . 8 `ul 1 quot 4 0 `ul 1 rem 4 4 ]
+[s S696 . 8 `ul 1 quot 4 0 `ul 1 rem 4 4 ]
 "4 /opt/microchip/xc8/v2.05/pic/sources/c99/common/culdiv.c
-[v _uldiv uldiv `(S610  1 e 8 0 ]
+[v _uldiv uldiv `(S696  1 e 8 0 ]
 {
 "6
-[v uldiv@rv rv `S610  1 a 8 13 ]
+[v uldiv@rv rv `S696  1 a 8 13 ]
 "4
 [v uldiv@number number `ul  1 p 4 5 ]
 [v uldiv@denom denom `ul  1 p 4 9 ]
@@ -482,26 +575,167 @@
 [v ___lldiv@dividend dividend `ul  1 p 4 5 ]
 "30
 } 0
-"132 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"149 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
 [v _putchar putchar `(v  1 e 1 0 ]
 {
 [v putchar@c c `uc  1 a 1 wreg ]
 [v putchar@c c `uc  1 a 1 wreg ]
 [v putchar@c c `uc  1 a 1 1 ]
-"136
+"153
 } 0
-"217
+"242
+[v _measure_temperature measure_temperature `(us  1 e 2 0 ]
+{
+"254
+[v measure_temperature@ft ft `f  1 a 4 21 ]
+"253
+[v measure_temperature@value value `us  1 a 2 29 ]
+"247
+[v measure_temperature@i i `uc  1 a 1 37 ]
+"244
+[v measure_temperature@sum sum `f  1 a 4 33 ]
+"258
+[v measure_temperature@t t `us  1 a 2 31 ]
+"260
+} 0
+"242 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcadd.c
+[v ___flsub __flsub `(d  1 e 4 0 ]
+{
+[v ___flsub@a a `d  1 p 4 26 ]
+[v ___flsub@b b `d  1 p 4 30 ]
+"250
+} 0
+"282 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
 [v _measure_gated_osc measure_gated_osc `(ul  1 e 4 0 ]
 {
-"251
+"318
 } 0
-"54
+"56
 [v _init init `(v  1 e 1 0 ]
 {
-"130
+"147
 } 0
-"187
+"262
+[v _external_temperature external_temperature `(us  1 e 2 0 ]
+{
+"275
+[v external_temperature@ft ft `f  1 a 4 13 ]
+"274
+[v external_temperature@value value `us  1 a 2 17 ]
+"268
+[v external_temperature@i i `uc  1 a 1 23 ]
+"267
+[v external_temperature@sum sum `f  1 a 4 19 ]
+"279
+} 0
+"233
+[v _read_NVM read_NVM `(us  1 e 2 0 ]
+{
+[v read_NVM@address address `us  1 p 2 1 ]
+"240
+} 0
+"10 /opt/microchip/xc8/v2.05/pic/sources/c99/common/xxtofl.c
+[v ___xxtofl __xxtofl `(d  1 e 4 0 ]
+{
+[v ___xxtofl@sign sign `uc  1 a 1 wreg ]
+"13
+[v ___xxtofl@arg arg `ul  1 a 4 2 ]
+"12
+[v ___xxtofl@exp exp `uc  1 a 1 1 ]
+"10
+[v ___xxtofl@sign sign `uc  1 a 1 wreg ]
+[v ___xxtofl@val val `l  1 p 4 3 ]
+"15
+[v ___xxtofl@sign sign `uc  1 a 1 0 ]
+"44
+} 0
+"43 /opt/microchip/xc8/v2.05/pic/sources/c99/common/fltol.c
+[v ___fltol __fltol `(l  1 e 4 0 ]
+{
+"45
+[v ___fltol@exp1 exp1 `uc  1 a 1 12 ]
+[v ___fltol@sign1 sign1 `uc  1 a 1 11 ]
+"43
+[v ___fltol@f1 f1 `d  1 p 4 60 ]
+"70
+} 0
+"8 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcmul.c
+[v ___flmul __flmul `(d  1 e 4 0 ]
+{
+[s S1204 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+"13
+[s S1209 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
+[u S1212 . 4 `l 1 i 4 0 `d 1 f 4 0 `S1204 1 fAsBytes 4 0 `S1209 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S1212  1 a 4 54 ]
+"12
+[v ___flmul@grs grs `ul  1 a 4 48 ]
+[s S1281 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+"14
+[u S1284 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S1281 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S1284  1 a 2 58 ]
+"10
+[v ___flmul@bexp bexp `uc  1 a 1 53 ]
+"11
+[v ___flmul@aexp aexp `uc  1 a 1 52 ]
+"9
+[v ___flmul@sign sign `uc  1 a 1 47 ]
+"8
+[v ___flmul@b b `d  1 p 4 34 ]
+[v ___flmul@a a `d  1 p 4 38 ]
+"205
+} 0
+"4 /opt/microchip/xc8/v2.05/pic/sources/c99/common/Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+{
+[v __Umul8_16@multiplier multiplier `uc  1 a 1 wreg ]
+"6
+[v __Umul8_16@word_mpld word_mpld `ui  1 a 2 7 ]
+"5
+[v __Umul8_16@product product `ui  1 a 2 5 ]
+"4
+[v __Umul8_16@multiplier multiplier `uc  1 a 1 wreg ]
+[v __Umul8_16@multiplicand multiplicand `uc  1 p 1 1 ]
+[v __Umul8_16@multiplier multiplier `uc  1 a 1 9 ]
+"60
+} 0
+"8 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 4 0 ]
+{
+"21
+[v ___fldiv@grs grs `ul  1 a 4 7 ]
+"22
+[v ___fldiv@rem rem `ul  1 a 4 0 ]
+"20
+[v ___fldiv@new_exp new_exp `i  1 a 2 5 ]
+"19
+[v ___fldiv@aexp aexp `uc  1 a 1 12 ]
+"18
+[v ___fldiv@bexp bexp `uc  1 a 1 11 ]
+"16
+[v ___fldiv@sign sign `uc  1 a 1 4 ]
+"8
+[v ___fldiv@a a `d  1 p 4 60 ]
+[v ___fldiv@b b `d  1 p 4 64 ]
+"185
+} 0
+"10 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+{
+"17
+[v ___fladd@grs grs `uc  1 a 1 25 ]
+"15
+[v ___fladd@bexp bexp `uc  1 a 1 24 ]
+"16
+[v ___fladd@aexp aexp `uc  1 a 1 23 ]
+"13
+[v ___fladd@signs signs `uc  1 a 1 22 ]
+"10
+[v ___fladd@b b `d  1 p 4 6 ]
+[v ___fladd@a a `d  1 p 4 10 ]
+"237
+} 0
+"204 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
 [v _ISR ISR `II(v  1 e 1 0 ]
 {
-"193
+"210
 } 0
