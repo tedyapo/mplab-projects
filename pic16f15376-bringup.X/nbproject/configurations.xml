@@ -34,7 +34,7 @@
         <platform>2</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC16F1xxxx_DFP" vendor="Microchip" version="1.0.54"/>
+        <pack name="PIC16F1xxxx_DFP" vendor="Microchip" version="1.1.82"/>
       </packs>
       <compileType>
         <linkerTool>
@@ -182,6 +182,9 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </PICkit3PlatformTool>
+      <XC8-CO>
+        <property key="coverage-enable" value=""/>
+      </XC8-CO>
       <XC8-config-global>
         <property key="advanced-elf" value="true"/>
         <property key="gcc-opt-driver-new" value="true"/>
