@@ -25,7 +25,7 @@
 [v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
 "10 /opt/microchip/xc8/v2.05/pic/sources/c99/common/xxtofl.c
 [v ___xxtofl __xxtofl `(d  1 e 4 0 ]
-"56 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"56 /home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 [v _init init `(v  1 e 1 0 ]
 "149
 [v _putchar putchar `(v  1 e 1 0 ]
@@ -47,9 +47,9 @@
 [v _set_delay set_delay `(v  1 e 1 0 ]
 "327
 [v _set_fine_tune set_fine_tune `(v  1 e 1 0 ]
-"338
+"339
 [v _main main `(v  1 e 1 0 ]
-"1 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/comp_dac.h
+"1 /home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/comp_dac.h
 [v _temp_comp_LUT temp_comp_LUT `[400]us  1 e 800 @9424 ]
 [s S771 . 1 `uc 1 INTEDG 1 0 :1:0 
 `uc 1 . 1 0 :5:1 
@@ -67,6 +67,18 @@
 [v _TRISB TRISB `VEuc  1 e 1 @19 ]
 "856
 [v _TRISC TRISC `VEuc  1 e 1 @20 ]
+[s S830 . 1 `uc 1 TRISC0 1 0 :1:0 
+`uc 1 TRISC1 1 0 :1:1 
+`uc 1 TRISC2 1 0 :1:2 
+`uc 1 TRISC3 1 0 :1:3 
+`uc 1 TRISC4 1 0 :1:4 
+`uc 1 TRISC5 1 0 :1:5 
+`uc 1 TRISC6 1 0 :1:6 
+`uc 1 TRISC7 1 0 :1:7 
+]
+"873
+[u S839 . 1 `S830 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES839  1 e 1 @20 ]
 "918
 [v _TRISD TRISD `VEuc  1 e 1 @21 ]
 "980
@@ -447,6 +459,30 @@
 "11078
 [u S748 . 1 `S740 1 . 1 0 ]
 [v _NVMCON1bits NVMCON1bits `VES748  1 e 1 @2078 ]
+[s S873 . 1 `uc 1 CLKRDIV 1 0 :3:0 
+`uc 1 CLKRDC 1 0 :2:3 
+`uc 1 . 1 0 :2:5 
+`uc 1 CLKREN 1 0 :1:7 
+]
+"11609
+[s S878 . 1 `uc 1 CLKRDIV0 1 0 :1:0 
+`uc 1 CLKRDIV1 1 0 :1:1 
+`uc 1 CLKRDIV2 1 0 :1:2 
+`uc 1 CLKRDC0 1 0 :1:3 
+`uc 1 CLKRDC1 1 0 :1:4 
+]
+[u S884 . 1 `S873 1 . 1 0 `S878 1 . 1 0 ]
+[v _CLKRCONbits CLKRCONbits `VES884  1 e 1 @2197 ]
+[s S899 . 1 `uc 1 CLKRCLK 1 0 :4:0 
+]
+"11670
+[s S901 . 1 `uc 1 CLKRCLK0 1 0 :1:0 
+`uc 1 CLKRCLK1 1 0 :1:1 
+`uc 1 CLKRCLK2 1 0 :1:2 
+`uc 1 CLKRCLK3 1 0 :1:3 
+]
+[u S906 . 1 `S899 1 . 1 0 `S901 1 . 1 0 ]
+[v _CLKRCLKbits CLKRCLKbits `VES906  1 e 1 @2198 ]
 [s S588 . 1 `uc 1 ADFVR 1 0 :2:0 
 `uc 1 CDAFVR 1 0 :2:2 
 `uc 1 TSRNG 1 0 :1:4 
@@ -490,6 +526,8 @@
 [v _RB1PPS RB1PPS `VEuc  1 e 1 @7961 ]
 "19158
 [v _RB2PPS RB2PPS `VEuc  1 e 1 @7962 ]
+"19422
+[v _RC0PPS RC0PPS `VEuc  1 e 1 @7968 ]
 "19686
 [v _RC6PPS RC6PPS `VEuc  1 e 1 @7974 ]
 "20258
@@ -498,22 +536,24 @@
 [v _ANSELB ANSELB `VEuc  1 e 1 @8003 ]
 "21250
 [v _ANSELC ANSELC `VEuc  1 e 1 @8014 ]
-"202 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+[s S852 . 1 `uc 1 SLRC0 1 0 :1:0 
+`uc 1 SLRC1 1 0 :1:1 
+`uc 1 SLRC2 1 0 :1:2 
+`uc 1 SLRC3 1 0 :1:3 
+`uc 1 SLRC4 1 0 :1:4 
+`uc 1 SLRC5 1 0 :1:5 
+`uc 1 SLRC6 1 0 :1:6 
+`uc 1 SLRC7 1 0 :1:7 
+]
+"21453
+[u S861 . 1 `S852 1 . 1 0 ]
+[v _SLRCONCbits SLRCONCbits `VES861  1 e 1 @8017 ]
+"202 /home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 [v _timer1_overflow_count timer1_overflow_count `uc  1 e 1 0 ]
-"338
+"339
 [v _main main `(v  1 e 1 0 ]
 {
-"446
-[v main@freq freq `ul  1 a 4 42 ]
-"435
-[v main@idx idx `s  1 a 2 54 ]
-"438
-[v main@tune_val tune_val `us  1 a 2 50 ]
-"434
-[v main@t t `us  1 a 2 48 ]
-"449
-[v main@int_t int_t `us  1 a 2 46 ]
-"458
+"489
 } 0
 "327
 [v _set_fine_tune set_fine_tune `(v  1 e 1 0 ]
@@ -575,7 +615,7 @@
 [v ___lldiv@dividend dividend `ul  1 p 4 5 ]
 "30
 } 0
-"149 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"149 /home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 [v _putchar putchar `(v  1 e 1 0 ]
 {
 [v putchar@c c `uc  1 a 1 wreg ]
@@ -605,7 +645,7 @@
 [v ___flsub@b b `d  1 p 4 30 ]
 "250
 } 0
-"282 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"282 /home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 [v _measure_gated_osc measure_gated_osc `(ul  1 e 4 0 ]
 {
 "318
@@ -662,17 +702,17 @@
 "8 /opt/microchip/xc8/v2.05/pic/sources/c99/common/sprcmul.c
 [v ___flmul __flmul `(d  1 e 4 0 ]
 {
-[s S1204 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
+[s S1312 . 4 `uc 1 a 1 0 `uc 1 b 1 1 `uc 1 c 1 2 `uc 1 d 1 3 ]
 "13
-[s S1209 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
-[u S1212 . 4 `l 1 i 4 0 `d 1 f 4 0 `S1204 1 fAsBytes 4 0 `S1209 1 fAsWords 4 0 ]
-[v ___flmul@prod prod `S1212  1 a 4 54 ]
+[s S1317 . 4 `i 1 wordA 2 0 `i 1 wordB 2 2 ]
+[u S1320 . 4 `l 1 i 4 0 `d 1 f 4 0 `S1312 1 fAsBytes 4 0 `S1317 1 fAsWords 4 0 ]
+[v ___flmul@prod prod `S1320  1 a 4 54 ]
 "12
 [v ___flmul@grs grs `ul  1 a 4 48 ]
-[s S1281 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
+[s S1389 . 2 `uc 1 a 1 0 `uc 1 b 1 1 ]
 "14
-[u S1284 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S1281 1 nAsBytes 2 0 ]
-[v ___flmul@temp temp `S1284  1 a 2 58 ]
+[u S1392 . 2 `i 1 i 2 0 `ui 1 n 2 0 `S1389 1 nAsBytes 2 0 ]
+[v ___flmul@temp temp `S1392  1 a 2 58 ]
 "10
 [v ___flmul@bexp bexp `uc  1 a 1 53 ]
 "11
@@ -734,7 +774,7 @@
 [v ___fladd@a a `d  1 p 4 10 ]
 "237
 } 0
-"204 /home/tyapo/MPLABXProjects/pic16f15376-bringup.X/bringup.c
+"204 /home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 [v _ISR ISR `II(v  1 e 1 0 ]
 {
 "210

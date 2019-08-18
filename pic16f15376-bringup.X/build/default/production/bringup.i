@@ -15,8 +15,8 @@
 
 
 
-#pragma config FEXTOSC = ECH
-#pragma config RSTOSC = EXT1X
+#pragma config FEXTOSC = OFF
+#pragma config RSTOSC = HFINT32
 
 
 #pragma config CLKOUTEN = OFF
@@ -13753,7 +13753,7 @@ uint16_t temp_comp_LUT[400] = {
 void init()
 {
 
-  TRISA = 0b11111110;
+  TRISA = 0b11111100;
   TRISB = 0b11111000;
   TRISC = 0b10001111;
   TRISD = 0b00000000;
@@ -14007,9 +14007,26 @@ void set_fine_tune(int16_t value)
   LATBbits.LATB0 = 1;
 }
 
+
 void main(void) {
   init();
-# 433 "bringup.c"
+# 356 "bringup.c"
+  TRISCbits.TRISC0 = 0;
+  RC0PPS = 0x1B;
+  SLRCONCbits.SLRC0 = 0;
+  CLKRCONbits.CLKREN = 1;
+  CLKRCONbits.CLKRDC = 0b10;
+  CLKRCONbits.CLKRDIV = 0b100;
+  CLKRCLKbits.CLKRCLK = 0b0000;
+
+  LATAbits.LATA1 = 0;
+  while(1){
+    LATAbits.LATA0 = 1;
+    _delay(500000);
+    LATAbits.LATA0 = 0;
+    _delay(500000);
+  }
+# 464 "bringup.c"
   while(1){
     uint16_t t = external_temperature();
     int16_t idx = (t-3800);

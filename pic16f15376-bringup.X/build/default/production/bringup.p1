@@ -478,10 +478,65 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 3428: extern volatile unsigned char SSP2BUF __attribute__((address(0x196)));
 [v _SSP2BUF `Vuc ~T0 @X0 0 e@406 ]
 [p mainexit ]
+"862
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 862:     struct {
+[s S47 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S47 . TRISC0 TRISC1 TRISC2 TRISC3 TRISC4 TRISC5 TRISC6 TRISC7 ]
+"861
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 861: typedef union {
+[u S46 `S47 1 ]
+[n S46 . . ]
+"873
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 873: extern volatile TRISCbits_t TRISCbits __attribute__((address(0x014)));
+[v _TRISCbits `VS46 ~T0 @X0 0 e@20 ]
+"19422
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 19422: extern volatile unsigned char RC0PPS __attribute__((address(0x1F20)));
+[v _RC0PPS `Vuc ~T0 @X0 0 e@7968 ]
+"21442
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 21442:     struct {
+[s S967 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S967 . SLRC0 SLRC1 SLRC2 SLRC3 SLRC4 SLRC5 SLRC6 SLRC7 ]
+"21441
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 21441: typedef union {
+[u S966 `S967 1 ]
+[n S966 . . ]
+"21453
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 21453: extern volatile SLRCONCbits_t SLRCONCbits __attribute__((address(0x1F51)));
+[v _SLRCONCbits `VS966 ~T0 @X0 0 e@8017 ]
+"11595
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11595:     struct {
+[s S544 :3 `uc 1 :2 `uc 1 :2 `uc 1 :1 `uc 1 ]
+[n S544 . CLKRDIV CLKRDC . CLKREN ]
+"11601
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11601:     struct {
+[s S545 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S545 . CLKRDIV0 CLKRDIV1 CLKRDIV2 CLKRDC0 CLKRDC1 ]
+"11594
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11594: typedef union {
+[u S543 `S544 1 `S545 1 ]
+[n S543 . . . ]
+"11609
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11609: extern volatile CLKRCONbits_t CLKRCONbits __attribute__((address(0x895)));
+[v _CLKRCONbits `VS543 ~T0 @X0 0 e@2197 ]
+"11660
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11660:     struct {
+[s S547 :4 `uc 1 ]
+[n S547 . CLKRCLK ]
+"11663
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11663:     struct {
+[s S548 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S548 . CLKRCLK0 CLKRCLK1 CLKRCLK2 CLKRCLK3 ]
+"11659
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11659: typedef union {
+[u S546 `S547 1 `S548 1 ]
+[n S546 . . . ]
+"11670
+[; ;/opt/microchip/xc8/v2.05/pic/include/pic16f15376.h: 11670: extern volatile CLKRCLKbits_t CLKRCLKbits __attribute__((address(0x896)));
+[v _CLKRCLKbits `VS546 ~T0 @X0 0 e@2198 ]
 "9 bringup.c
-[p x FEXTOSC = ECH ]
+[p x FEXTOSC = OFF ]
 "10
-[p x RSTOSC = EXT1X ]
+[p x RSTOSC = HFINT32 ]
 "13
 [p x CLKOUTEN = OFF ]
 "14
@@ -2053,8 +2108,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _init ]
 [f ]
 "59
-[; ;bringup.c: 59:   TRISA = 0b11111110;
-[e = _TRISA -> -> 254 `i `uc ]
+[; ;bringup.c: 59:   TRISA = 0b11111100;
+[e = _TRISA -> -> 252 `i `uc ]
 "60
 [; ;bringup.c: 60:   TRISB = 0b11111000;
 [e = _TRISB -> -> 248 `i `uc ]
@@ -2804,99 +2859,145 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 1066 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"338
-[; ;bringup.c: 338: void main(void) {
+"339
+[; ;bringup.c: 339: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"339
-[; ;bringup.c: 339:   init();
+"340
+[; ;bringup.c: 340:   init();
 [e ( _init ..  ]
-"433
-[; ;bringup.c: 433:   while(1){
+"356
+[; ;bringup.c: 356:   TRISCbits.TRISC0 = 0;
+[e = . . _TRISCbits 0 0 -> -> 0 `i `uc ]
+"357
+[; ;bringup.c: 357:   RC0PPS = 0x1B;
+[e = _RC0PPS -> -> 27 `i `uc ]
+"358
+[; ;bringup.c: 358:   SLRCONCbits.SLRC0 = 0;
+[e = . . _SLRCONCbits 0 0 -> -> 0 `i `uc ]
+"359
+[; ;bringup.c: 359:   CLKRCONbits.CLKREN = 1;
+[e = . . _CLKRCONbits 0 3 -> -> 1 `i `uc ]
+"360
+[; ;bringup.c: 360:   CLKRCONbits.CLKRDC = 0b10;
+[e = . . _CLKRCONbits 0 1 -> -> 2 `i `uc ]
+"361
+[; ;bringup.c: 361:   CLKRCONbits.CLKRDIV = 0b100;
+[e = . . _CLKRCONbits 0 0 -> -> 4 `i `uc ]
+"362
+[; ;bringup.c: 362:   CLKRCLKbits.CLKRCLK = 0b0000;
+[e = . . _CLKRCLKbits 0 0 -> -> 0 `i `uc ]
+"364
+[; ;bringup.c: 364:   LATAbits.LATA1 = 0;
+[e = . . _LATAbits 0 1 -> -> 0 `i `uc ]
+"365
+[; ;bringup.c: 365:   while(1){
 [e :U 1075 ]
 {
-"434
-[; ;bringup.c: 434:     uint16_t t = external_temperature();
-[v _t `us ~T0 @X0 1 a ]
-[e = _t ( _external_temperature ..  ]
-"435
-[; ;bringup.c: 435:     int16_t idx = (t-3800);
-[v _idx `s ~T0 @X0 1 a ]
-[e = _idx -> - -> _t `ui -> -> 3800 `i `ui `s ]
-"436
-[; ;bringup.c: 436:     if (idx > 399) idx = 399;
-[e $ ! > -> _idx `i -> 399 `i 1077  ]
-[e = _idx -> -> 399 `i `s ]
-[e :U 1077 ]
-"437
-[; ;bringup.c: 437:     if (idx < 0) idx = 0;
-[e $ ! < -> _idx `i -> 0 `i 1078  ]
-[e = _idx -> -> 0 `i `s ]
-[e :U 1078 ]
-"438
-[; ;bringup.c: 438:     uint16_t tune_val = temp_comp_LUT[idx];
-[v _tune_val `us ~T0 @X0 1 a ]
-[e = _tune_val *U + &U _temp_comp_LUT * -> -> _idx `us `ux -> -> # *U &U _temp_comp_LUT `ui `ux ]
-"439
-[; ;bringup.c: 439:     set_fine_tune(tune_val);
-[e ( _set_fine_tune (1 -> _tune_val `s ]
-"440
-[; ;bringup.c: 440:     uint16_t delay_val = 1023;
-[v _delay_val `us ~T0 @X0 1 a ]
-[e = _delay_val -> -> 1023 `i `us ]
-"441
-[; ;bringup.c: 441:     set_delay(delay_val);
-[e ( _set_delay (1 -> _delay_val `s ]
-"442
-[; ;bringup.c: 442:     send_ascii_int(delay_val);
-[e ( _send_ascii_int (1 -> _delay_val `ul ]
-"443
-[; ;bringup.c: 443:     putchar(' ');
-[e ( _putchar (1 -> -> 32 `ui `uc ]
-"444
-[; ;bringup.c: 444:     send_ascii_int(tune_val);
-[e ( _send_ascii_int (1 -> _tune_val `ul ]
-"445
-[; ;bringup.c: 445:     putchar(' ');
-[e ( _putchar (1 -> -> 32 `ui `uc ]
-"446
-[; ;bringup.c: 446:     uint32_t freq = measure_gated_osc();
-[v _freq `ul ~T0 @X0 1 a ]
-[e = _freq ( _measure_gated_osc ..  ]
-"447
-[; ;bringup.c: 447:     send_ascii_int(freq);
-[e ( _send_ascii_int (1 _freq ]
-"448
-[; ;bringup.c: 448:     putchar(' ');
-[e ( _putchar (1 -> -> 32 `ui `uc ]
-"449
-[; ;bringup.c: 449:     uint16_t int_t = measure_temperature();
-[v _int_t `us ~T0 @X0 1 a ]
-[e = _int_t ( _measure_temperature ..  ]
-"450
-[; ;bringup.c: 450:     send_ascii_int(int_t);
-[e ( _send_ascii_int (1 -> _int_t `ul ]
-"451
-[; ;bringup.c: 451:     putchar(' ');
-[e ( _putchar (1 -> -> 32 `ui `uc ]
-"452
-[; ;bringup.c: 452:     send_ascii_int(t);
-[e ( _send_ascii_int (1 -> _t `ul ]
-"453
-[; ;bringup.c: 453:     putchar('\n');
-[e ( _putchar (1 -> -> 10 `ui `uc ]
-"454
-[; ;bringup.c: 454:   }
+"366
+[; ;bringup.c: 366:     LATAbits.LATA0 = 1;
+[e = . . _LATAbits 0 0 -> -> 1 `i `uc ]
+"367
+[; ;bringup.c: 367:     _delay(500000);
+[e ( __delay (1 -> -> 500000 `l `ul ]
+"368
+[; ;bringup.c: 368:     LATAbits.LATA0 = 0;
+[e = . . _LATAbits 0 0 -> -> 0 `i `uc ]
+"369
+[; ;bringup.c: 369:     _delay(500000);
+[e ( __delay (1 -> -> 500000 `l `ul ]
+"370
+[; ;bringup.c: 370:   }
 }
 [e :U 1074 ]
 [e $U 1075  ]
 [e :U 1076 ]
-"457
-[; ;bringup.c: 457:   return;
+"464
+[; ;bringup.c: 464:   while(1){
+[e :U 1078 ]
+{
+"465
+[; ;bringup.c: 465:     uint16_t t = external_temperature();
+[v _t `us ~T0 @X0 1 a ]
+[e = _t ( _external_temperature ..  ]
+"466
+[; ;bringup.c: 466:     int16_t idx = (t-3800);
+[v _idx `s ~T0 @X0 1 a ]
+[e = _idx -> - -> _t `ui -> -> 3800 `i `ui `s ]
+"467
+[; ;bringup.c: 467:     if (idx > 399) idx = 399;
+[e $ ! > -> _idx `i -> 399 `i 1080  ]
+[e = _idx -> -> 399 `i `s ]
+[e :U 1080 ]
+"468
+[; ;bringup.c: 468:     if (idx < 0) idx = 0;
+[e $ ! < -> _idx `i -> 0 `i 1081  ]
+[e = _idx -> -> 0 `i `s ]
+[e :U 1081 ]
+"469
+[; ;bringup.c: 469:     uint16_t tune_val = temp_comp_LUT[idx];
+[v _tune_val `us ~T0 @X0 1 a ]
+[e = _tune_val *U + &U _temp_comp_LUT * -> -> _idx `us `ux -> -> # *U &U _temp_comp_LUT `ui `ux ]
+"470
+[; ;bringup.c: 470:     set_fine_tune(tune_val);
+[e ( _set_fine_tune (1 -> _tune_val `s ]
+"471
+[; ;bringup.c: 471:     uint16_t delay_val = 1023;
+[v _delay_val `us ~T0 @X0 1 a ]
+[e = _delay_val -> -> 1023 `i `us ]
+"472
+[; ;bringup.c: 472:     set_delay(delay_val);
+[e ( _set_delay (1 -> _delay_val `s ]
+"473
+[; ;bringup.c: 473:     send_ascii_int(delay_val);
+[e ( _send_ascii_int (1 -> _delay_val `ul ]
+"474
+[; ;bringup.c: 474:     putchar(' ');
+[e ( _putchar (1 -> -> 32 `ui `uc ]
+"475
+[; ;bringup.c: 475:     send_ascii_int(tune_val);
+[e ( _send_ascii_int (1 -> _tune_val `ul ]
+"476
+[; ;bringup.c: 476:     putchar(' ');
+[e ( _putchar (1 -> -> 32 `ui `uc ]
+"477
+[; ;bringup.c: 477:     uint32_t freq = measure_gated_osc();
+[v _freq `ul ~T0 @X0 1 a ]
+[e = _freq ( _measure_gated_osc ..  ]
+"478
+[; ;bringup.c: 478:     send_ascii_int(freq);
+[e ( _send_ascii_int (1 _freq ]
+"479
+[; ;bringup.c: 479:     putchar(' ');
+[e ( _putchar (1 -> -> 32 `ui `uc ]
+"480
+[; ;bringup.c: 480:     uint16_t int_t = measure_temperature();
+[v _int_t `us ~T0 @X0 1 a ]
+[e = _int_t ( _measure_temperature ..  ]
+"481
+[; ;bringup.c: 481:     send_ascii_int(int_t);
+[e ( _send_ascii_int (1 -> _int_t `ul ]
+"482
+[; ;bringup.c: 482:     putchar(' ');
+[e ( _putchar (1 -> -> 32 `ui `uc ]
+"483
+[; ;bringup.c: 483:     send_ascii_int(t);
+[e ( _send_ascii_int (1 -> _t `ul ]
+"484
+[; ;bringup.c: 484:     putchar('\n');
+[e ( _putchar (1 -> -> 10 `ui `uc ]
+"485
+[; ;bringup.c: 485:   }
+}
+[e :U 1077 ]
+[e $U 1078  ]
+[e :U 1079 ]
+"488
+[; ;bringup.c: 488:   return;
 [e $UE 1073  ]
-"458
-[; ;bringup.c: 458: }
+"489
+[; ;bringup.c: 489: }
 [e :UE 1073 ]
 }

@@ -6,8 +6,8 @@
  */
 
 // CONFIG1
-#pragma config FEXTOSC = OFF    // External Oscillator mode selection bits (Oscillator not enabled)
-#pragma config RSTOSC = HFINT32 // Power-up default value for COSC bits (HFINTOSC with OSCFRQ= 32 MHz and CDIV = 1:1)
+#pragma config FEXTOSC = ECH    // External Oscillator mode selection bits (EC above 8MHz; PFM set to high power)
+#pragma config RSTOSC = EXT1X   // Power-up default value for COSC bits (EXTOSC operating per FEXTOSC bits)
 //#pragma config FEXTOSC = ECH    // External Oscillator mode selection bits (EC above 8MHz; PFM set to high power)
 //#pragma config RSTOSC = HFINT32 // Power-up default value for COSC bits (HFINTOSC with OSCFRQ= 32 MHz and CDIV = 1:1)
 #pragma config CLKOUTEN = OFF   // Clock Out Enable bit (CLKOUT function is disabled; i/o or oscillator function on OSC2)
@@ -56,7 +56,7 @@
 void init()
 {
   // setup ports
-  TRISA = 0b11111100;
+  TRISA = 0b11111110;
   TRISB = 0b11111000;
   TRISC = 0b10001111;
   TRISD = 0b00000000;
@@ -335,40 +335,9 @@ void set_fine_tune(int16_t value)
   LATBbits.LATB0 = 1;
 }
 
-
 void main(void) {
   init();
-  
-  // !!! set inlvl and slrcon for all pins as required !!!
-  
-  
-  // Note: maximum SPI input clock is 3.4 MHz
-  //  => must divide fclk by at least 16
-  // /16 -> 2 MHz
-  // /32 -> 1 MHz
-  // /64 -> 500 kHz
-  // /128 -> 256 kHz
-  //  can also use 500 kHz MFINTOSC fo other frequencies
-  //  NCO can't output to portc directly
-  //  looks like NCO1 can be input to CLC1, which can be routed to PORTC
-  
-  // setup reference clock output on RC0
-  TRISCbits.TRISC0 = 0;
-  RC0PPS = 0x1B;  // clock reference on RC0
-  SLRCONCbits.SLRC0 = 0;
-  CLKRCONbits.CLKREN = 1; // enable reference clock
-  CLKRCONbits.CLKRDC = 0b10; // 50% duty cycle
-  CLKRCONbits.CLKRDIV = 0b100; // 16:1
-  CLKRCLKbits.CLKRCLK = 0b0000; // base clock = fosc
-  
-  LATAbits.LATA1 = 0;
-  while(1){
-    LATAbits.LATA0 = 1;
-    _delay(500000);
-    LATAbits.LATA0 = 0;
-    _delay(500000);
-  }
-  
+
 //#define MEASURE_DIGITAL
 //#define MEASURE_ANALOG
 //#define MEASURE_BOTH

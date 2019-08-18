@@ -1,13 +1,13 @@
 /*
- * File:   bringup.c
+ * File:   comparator-sampler.c
  * Author: tyapo
  *
  * Created on June 21, 2019, 10:23 PM
  */
 
 // CONFIG1
-#pragma config FEXTOSC = OFF    // External Oscillator mode selection bits (Oscillator not enabled)
-#pragma config RSTOSC = HFINT32 // Power-up default value for COSC bits (HFINTOSC with OSCFRQ= 32 MHz and CDIV = 1:1)
+#pragma config FEXTOSC = ECH    // External Oscillator mode selection bits (EC above 8MHz; PFM set to high power)
+#pragma config RSTOSC = EXT1X   // Power-up default value for COSC bits (EXTOSC operating per FEXTOSC bits)
 //#pragma config FEXTOSC = ECH    // External Oscillator mode selection bits (EC above 8MHz; PFM set to high power)
 //#pragma config RSTOSC = HFINT32 // Power-up default value for COSC bits (HFINTOSC with OSCFRQ= 32 MHz and CDIV = 1:1)
 #pragma config CLKOUTEN = OFF   // Clock Out Enable bit (CLKOUT function is disabled; i/o or oscillator function on OSC2)
@@ -49,18 +49,181 @@
 #include <xc.h>
 #include <stdint.h>
 
-#define _XTAL_FREQ 20000000UL
+#define _XTAL_FREQ 32000000UL
 
 #include "comp_dac.h"
+
+// indicator LED on RC4
+void set_LED(uint8_t state)
+{
+  LATCbits.LATC4 = state;
+}
+
+typedef enum {CS_EXTERNAL = 0, CS_INTERNAL = 1} clock_source_t;
+void select_clock_source(clock_source_t cs)
+{
+  LATEbits.LATE2 = cs;
+}
+
+// internal clock mode
+// 1. bit-banged clock and comparator reads
+// 2. sysclock output (or PWM or other) and serial input
+// external clock mode
+// * must use serial port reads, and enable, disable clock by switching source
+
+void init_single_sample()
+{
+  select_clock_source(CS_INTERNAL);
+  RC0PPS = 0x00;  // LATC0 on RC0
+  // toggle clock
+  LATCbits.LATC0 = 0;
+}
+
+uint8_t internal_clock_single_sample()
+{
+  LATCbits.LATC0 = 1; // sample input
+  LATCbits.LATC0 = 0; // transfer result to flip-flop
+  return LATBbits.LATB3;
+}
+
+void naive_scan(void)
+{
+  uint16_t delay_step = 8;
+  uint16_t vref_step = 16;
+    
+  init_single_sample();
+    
+  for (uint16_t vref = 0; vref < 4096; vref += vref_step){
+    set_DAC(vref);
+    // wait for vref to settle
+    // need 4.5 us delay for full steps; probably less for single-bit steps
+    _delay(8*5); // 8 cycles per us        
+    for (uint16_t delay = 0; delay < 1024; delay += delay_step){
+      set_delay(delay);
+      uint8_t sample = internal_clock_single_sample();
+      send_ascii_int(vref);
+      putchar(' ');
+      send_ascii_int(delay);
+      putchar(' ');
+      send_ascii_int(sample);
+      putchar('\n');
+    }
+  }
+}
+
+void counting_scan(void)
+{
+  uint16_t delay_step = 8;
+  uint16_t vref_step = 16;
+    
+  init_single_sample();
+  
+  for (uint16_t delay = 0; delay < 1024; delay += delay_step){
+    set_delay(delay);  
+    uint16_t count = 0;
+    for (uint16_t vref = 0; vref < 4096; vref += vref_step){
+      set_DAC(vref);
+      // wait for vref to settle
+      // need 4.5 us delay for full steps; probably less for single-bit steps
+      _delay(8*5); // 8 cycles per us        
+      
+      if (internal_clock_single_sample()){
+        count++;
+      }
+    }
+    send_ascii_int(delay);
+    putchar(' ');
+    send_ascii_int(count*vref_step);
+    putchar('\n');
+  }
+}
+
+void enable_reference_clock()
+{
+  select_clock_source(CS_INTERNAL);
+  // Note: maximum SPI input clock is 3.4 MHz
+  //  => must divide fclk by at least 16
+  // /16 -> 2 MHz
+  // /32 -> 1 MHz
+  // /64 -> 500 kHz
+  // /128 -> 256 kHz
+  //  can also use 500 kHz MFINTOSC fo other frequencies
+  //  NCO can't output to portc directly
+  //  looks like NCO1 can be input to CLC1, which can be routed to PORTC
+  
+  // setup reference clock output on RC0
+  TRISCbits.TRISC0 = 0;
+  RC0PPS = 0x1B;  // clock reference on RC0
+  SLRCONCbits.SLRC0 = 0;
+  CLKRCONbits.CLKREN = 1; // enable reference clock
+  CLKRCONbits.CLKRDC = 0b10; // 50% duty cycle
+  CLKRCONbits.CLKRDIV = 0b100; // 16:1
+  CLKRCLKbits.CLKRCLK = 0b0000; // base clock = fosc
+}
+
 
 void init()
 {
   // setup ports
-  TRISA = 0b11111100;
-  TRISB = 0b11111000;
-  TRISC = 0b10001111;
-  TRISD = 0b00000000;
-  TRISE = 0b11111100;
+  // PORTA unused
+  TRISA = 0xff;
+  ANSELA = 0x00;
+  WPUA = 0x00;
+  ODCONA = 0x00;
+  SLRCONA = 0x00;
+  INLVLA = 0xff;
+  
+  // RB0: VREF-CS
+  // RB1: VREF-SCK
+  // RB2: VREF-SDI
+  // RB3: COMPARATOR
+  // RB4: COMPARATOR-CLK
+  TRISB = 0b111111000;
+  ANSELB = 0x00;
+  WPUB = 0x00;
+  ODCONB = 0x00;
+  SLRCONB = 0x00;
+  INLVLB = 0xff;
+  
+  // RC0: sample clock output
+  // RC1: NC
+  // RC2: NC
+  // RC3: NC
+  // RC4: status LED
+  // RC5: LDACn
+  // RC6: TX
+  // RC7: RX
+  TRISC = 0b10001110;
+  ANSELC = 0x00;
+  WPUC = 0x00;
+  ODCONC = 0x00;
+  SLRCONC = 0x00;
+  INLVLC = 0xff;
+  
+  // RD0: D0
+  // RD1: D1
+  // RD2: D2
+  // RD3: D3
+  // RD4: D4
+  // RD5: D5
+  // RD6: D6
+  // RD7: D7
+  TRISD = 0x00;
+  ANSELD = 0x00;
+  WPUD = 0x00;
+  ODCOND = 0x00;
+  SLRCOND = 0x00;
+  INLVLD = 0xff;
+  
+  // RE0: D8
+  // RE1: D9
+  // RE2: CLK-SEL
+  TRISE = 0xf8;
+  ANSELE = 0x00;
+  WPUE = 0x00;
+  ODCONE = 0x00;
+  SLRCONE = 0x00;
+  INLVLE = 0xff;
 
   ANSELA = 0; // PORTA all digital
   ANSELB = 0b00010000; // PORTB all digital except RB4 analog
@@ -75,16 +238,16 @@ void init()
   RCSTA1bits.CREN = 1;
   TXSTA1bits.BRGH = 1;
   BAUDCON1bits.BRG16 = 1;
-  //SP1BRG = 42; // 115.2k @ 20 MHz clock
-  SP1BRG = 21; // 230.4k @ 20 MHz clock
+  //SP1BRG = 68; // 115.2k @ 32 MHz clock
+  SP1BRG = 34; // 230.4k @ 22 MHz clock
 
   // setup MSSP for SPI master
   RB1PPS = 0x17;  // SCK2
   RB2PPS = 0x18;  // SDO2
   //SSP2CON1bits.SSPM = 0b1010; // SPI master, use SSP2ADD for BRG
   //SSP2ADDbits.SSPADD = 0x4f; // 100 kHz SPI @ 32 MHz clock
-  SSP2CON1bits.SSPM = 0b0001; // SPI master, 1.25 MHz @ 20 MHz clock
-  SSP2CON1bits.SSPEN = 1; // enable MSSP
+  SSP2CON1bits.SSPM = 0b0000 // SPI master, 8 MHz @ 32 MHz clock
+    SSP2CON1bits.SSPEN = 1; // enable MSSP
   SSP2CON1bits.CKP = 0; // idle clock low
   SSP2STATbits.CKE = 1; // transmit on active->idle transition
   LATBbits.LATB0 = 1; // SS high
@@ -144,6 +307,9 @@ void init()
   ADCON1bits.ADFM = 1; // right justified result
   ADCON1bits.ADCS = 0b110; // 3.2 us conversion @ 20 MHz
   ADCON1bits.ADPREF = 0b11; // Vref uses FVR
+  
+  // set LDACn low: DAC loads on rising CSn
+  LATCbits.LATC5 = 0;
 }
 
 void putchar(char c)
@@ -318,57 +484,32 @@ uint32_t measure_gated_osc(void)
 }
 
 
-void set_delay(int16_t value)
+void set_delay(uint16_t value)
 {
   LATD = value & 0xff;
-  LATE = (value >> 8) & 0x03;
+  LATE = (LATE & 0xfc) | ((value >> 8) & 0x03);
 }
 
-void set_fine_tune(int16_t value)
+// Write to MCP4921 DAC
+// !!! note: speed this up by tying off LDAC outside this routine
+// !!!       use falling edge of CSn instead
+void set_DAC(uint16_t value)
 {
-  // Write to MCP4821 DAC
+  // lower CSn
   LATBbits.LATB0 = 0;
+  
   SSP2BUF = 0b00110000 | ((value & 0x0f00) >> 8);
   while(!SSP2STATbits.BF);
   SSP2BUF = value & 0xff;
   while(!SSP2STATbits.BF);
+
+  // raise CSn
   LATBbits.LATB0 = 1;
 }
 
-
 void main(void) {
   init();
-  
-  // !!! set inlvl and slrcon for all pins as required !!!
-  
-  
-  // Note: maximum SPI input clock is 3.4 MHz
-  //  => must divide fclk by at least 16
-  // /16 -> 2 MHz
-  // /32 -> 1 MHz
-  // /64 -> 500 kHz
-  // /128 -> 256 kHz
-  //  can also use 500 kHz MFINTOSC fo other frequencies
-  //  NCO can't output to portc directly
-  //  looks like NCO1 can be input to CLC1, which can be routed to PORTC
-  
-  // setup reference clock output on RC0
-  TRISCbits.TRISC0 = 0;
-  RC0PPS = 0x1B;  // clock reference on RC0
-  SLRCONCbits.SLRC0 = 0;
-  CLKRCONbits.CLKREN = 1; // enable reference clock
-  CLKRCONbits.CLKRDC = 0b10; // 50% duty cycle
-  CLKRCONbits.CLKRDIV = 0b100; // 16:1
-  CLKRCLKbits.CLKRCLK = 0b0000; // base clock = fosc
-  
-  LATAbits.LATA1 = 0;
-  while(1){
-    LATAbits.LATA0 = 1;
-    _delay(500000);
-    LATAbits.LATA0 = 0;
-    _delay(500000);
-  }
-  
+
 //#define MEASURE_DIGITAL
 //#define MEASURE_ANALOG
 //#define MEASURE_BOTH
