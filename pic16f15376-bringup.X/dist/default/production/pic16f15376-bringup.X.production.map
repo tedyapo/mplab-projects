@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=/opt/microchip/xc8/v2.05/pic/dat/en_msgs.txt -cs \
   -h+dist/default/production/pic16f15376-bringup.X.production.sym \
   --cmf=dist/default/production/pic16f15376-bringup.X.production.cmf -z \
-  -Q16F15376 -o/tmp/xcXH7xvng --defsym=__MPLAB_BUILD=1 \
+  -Q16F15376 -o/tmp/xcXfresYm --defsym=__MPLAB_BUILD=1 \
   -Mdist/default/production/pic16f15376-bringup.X.production.map -E1 \
   -ver=XC8 --acfsm=1493 -ASTACK=02088h-024CFh -pstack=STACK \
   -ACODE=00h-07FFhx8 -ASTRCODE=00h-03FFFh -ASTRING=00h-0FFhx64 \
@@ -45,7 +45,7 @@ Linker command line:
   -preset_vec=00h,intentry=04h,init,end_init -ppowerup=CODE -pcinit=CODE \
   -pfunctab=ENTRY -ACONFIG=08007h-0800Bh -pconfig=CONFIG -DCONFIG=2 \
   -AIDLOC=08000h-08003h -pidloc=IDLOC -DIDLOC=2 -DCODE=2 -DSTRCODE=2 \
-  -DSTRING=2 -DCONST=2 -DENTRY=2 -k /tmp/xcXAOo68C.o \
+  -DSTRING=2 -DCONST=2 -DENTRY=2 -k /tmp/xcXmj3SFI.o \
   dist/default/production/pic16f15376-bringup.X.production.o 
 
 Object code version is 3.11
@@ -55,7 +55,7 @@ Machine type is 16F15376
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-/tmp/xcXAOo68C.o
+/tmp/xcXmj3SFI.o
                 end_init                             12       12        2        8       0
                 reset_vec                             0        0        2        0       0
                 config                             8007     8007        5    1000E       0

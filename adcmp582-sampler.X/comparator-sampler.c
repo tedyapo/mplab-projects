@@ -7,9 +7,7 @@
 
 // CONFIG1
 #pragma config FEXTOSC = ECH    // External Oscillator mode selection bits (EC above 8MHz; PFM set to high power)
-#pragma config RSTOSC = EXT1X   // Power-up default value for COSC bits (EXTOSC operating per FEXTOSC bits)
-//#pragma config FEXTOSC = ECH    // External Oscillator mode selection bits (EC above 8MHz; PFM set to high power)
-//#pragma config RSTOSC = HFINT32 // Power-up default value for COSC bits (HFINTOSC with OSCFRQ= 32 MHz and CDIV = 1:1)
+#pragma config RSTOSC = EXT4X   // Power-up default value for COSC bits (EXTOSC with 4x PLL, with EXTOSC operating per FEXTOSC bits)
 #pragma config CLKOUTEN = OFF   // Clock Out Enable bit (CLKOUT function is disabled; i/o or oscillator function on OSC2)
 #pragma config CSWEN = ON       // Clock Switch Enable bit (Writing to NOSC and NDIV is allowed)
 #pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enable bit (FSCM timer enabled)
@@ -43,15 +41,68 @@
 // CONFIG5
 #pragma config CP = OFF         // UserNVM Program memory code protection bit (UserNVM code protection disabled)
 
-// #pragma config statements should precede project file includes.
-// Use project enums instead of #define for ON and OFF.
-
 #include <xc.h>
 #include <stdint.h>
 
 #define _XTAL_FREQ 32000000UL
 
-#include "comp_dac.h"
+
+void putchar(char c)
+{
+  while(!PIR3bits.TX1IF);
+  TX1REG = c;
+}
+
+void send_hex(uint16_t value)
+{
+  char hexchar[16] = {'0', '1', '2', '3', '4', '5', '6', '7',
+                      '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+  putchar('0');
+  putchar('x');
+  putchar(hexchar[(value & 0xf000)>>12]);
+  putchar(hexchar[(value & 0x0f00)>> 8]);
+  putchar(hexchar[(value & 0x00f0)>> 4]);
+  putchar(hexchar[(value & 0x000f)>> 0]);
+  putchar('\n');
+}
+
+void send_ascii_int(int32_t value)
+{
+  uldiv_t x;
+  uint8_t leading_found = 0;
+  uint32_t place = 1000000000;
+  if (value < 0){
+    putchar('-');
+    value = -value;
+  }
+  while (place > 1){
+    x = uldiv(value, place);
+    if (x.quot > 0 || leading_found){
+      leading_found = 1;
+      putchar('0' + x.quot);
+    }
+    value = x.rem;
+    place = place / 10;
+  }
+  putchar('0' + value);
+}
+
+
+char getchar()
+{
+
+  if (RC1STAbits.OERR){
+    RC1STAbits.CREN = 0; // clear overrun error
+    RC1STAbits.CREN = 1; // re-enable RX
+  }
+  while(!PIR3bits.RC1IF);
+  return RC1REG;
+}
+
+uint8_t char_avail()
+{
+  return !PIR3bits.RC1IF;
+}
 
 // indicator LED on RC4
 void set_LED(uint8_t state)
@@ -63,6 +114,12 @@ typedef enum {CS_EXTERNAL = 0, CS_INTERNAL = 1} clock_source_t;
 void select_clock_source(clock_source_t cs)
 {
   LATEbits.LATE2 = cs;
+}
+
+void set_delay(uint16_t value)
+{
+  LATD = value & 0xff;
+  LATE = (LATE & 0xfc) | ((value >> 8) & 0x03);
 }
 
 // internal clock mode
@@ -83,7 +140,47 @@ uint8_t internal_clock_single_sample()
 {
   LATCbits.LATC0 = 1; // sample input
   LATCbits.LATC0 = 0; // transfer result to flip-flop
-  return LATBbits.LATB3;
+  return PORTBbits.RB3;
+}
+
+void enable_reference_clock()
+{
+  select_clock_source(CS_INTERNAL);
+  // Note: maximum SPI input clock is 3.4 MHz
+  //  => must divide fclk by at least 16
+  // /16 -> 2 MHz
+  // /32 -> 1 MHz
+  // /64 -> 500 kHz
+  // /128 -> 256 kHz
+  //  can also use 500 kHz MFINTOSC fo other frequencies
+  //  NCO can't output to portc directly
+  //  looks like NCO1 can be input to CLC1, which can be routed to PORTC
+  
+  // setup reference clock output on RC0
+  TRISCbits.TRISC0 = 0;
+  RC0PPS = 0x1B;  // clock reference on RC0
+  SLRCONCbits.SLRC0 = 0;
+  CLKRCONbits.CLKREN = 1; // enable reference clock
+  CLKRCONbits.CLKRDC = 0b10; // 50% duty cycle
+  CLKRCONbits.CLKRDIV = 0b100; // 16:1
+  CLKRCLKbits.CLKRCLK = 0b0000; // base clock = fosc
+}
+
+// Write to MCP4921 DAC
+// !!! note: speed this up by tying off LDAC outside this routine
+// !!!       use falling edge of CSn instead
+void set_DAC(uint16_t value)
+{
+  // lower CSn
+  LATBbits.LATB0 = 0;
+  
+  SSP2BUF = 0b00110000 | ((value & 0x0f00) >> 8);
+  while(!SSP2STATbits.BF);
+  SSP2BUF = value & 0xff;
+  while(!SSP2STATbits.BF);
+
+  // raise CSn
+  LATBbits.LATB0 = 1;
 }
 
 void naive_scan(void)
@@ -138,30 +235,6 @@ void counting_scan(void)
   }
 }
 
-void enable_reference_clock()
-{
-  select_clock_source(CS_INTERNAL);
-  // Note: maximum SPI input clock is 3.4 MHz
-  //  => must divide fclk by at least 16
-  // /16 -> 2 MHz
-  // /32 -> 1 MHz
-  // /64 -> 500 kHz
-  // /128 -> 256 kHz
-  //  can also use 500 kHz MFINTOSC fo other frequencies
-  //  NCO can't output to portc directly
-  //  looks like NCO1 can be input to CLC1, which can be routed to PORTC
-  
-  // setup reference clock output on RC0
-  TRISCbits.TRISC0 = 0;
-  RC0PPS = 0x1B;  // clock reference on RC0
-  SLRCONCbits.SLRC0 = 0;
-  CLKRCONbits.CLKREN = 1; // enable reference clock
-  CLKRCONbits.CLKRDC = 0b10; // 50% duty cycle
-  CLKRCONbits.CLKRDIV = 0b100; // 16:1
-  CLKRCLKbits.CLKRCLK = 0b0000; // base clock = fosc
-}
-
-
 void init()
 {
   // setup ports
@@ -178,7 +251,7 @@ void init()
   // RB2: VREF-SDI
   // RB3: COMPARATOR
   // RB4: COMPARATOR-CLK
-  TRISB = 0b111111000;
+  TRISB = 0b11111000;
   ANSELB = 0x00;
   WPUB = 0x00;
   ODCONB = 0x00;
@@ -224,10 +297,17 @@ void init()
   ODCONE = 0x00;
   SLRCONE = 0x00;
   INLVLE = 0xff;
-
-  ANSELA = 0; // PORTA all digital
-  ANSELB = 0b00010000; // PORTB all digital except RB4 analog
-  ANSELC = 0; // PORTC all digital
+  
+    // setup MSSP for SPI master
+  RB1PPS = 0x17;  // SCK2
+  RB2PPS = 0x18;  // SDO2
+  //SSP2CON1bits.SSPM = 0b1010; // SPI master, use SSP2ADD for BRG
+  //SSP2ADDbits.SSPADD = 0x4f; // 100 kHz SPI @ 32 MHz clock
+  SSP2CON1bits.SSPM = 0b0000; // SPI master, 8 MHz @ 32 MHz clock
+  SSP2CON1bits.SSPEN = 1; // enable MSSP
+  SSP2CON1bits.CKP = 0; // idle clock low
+  SSP2STATbits.CKE = 1; // transmit on active->idle transition
+  LATBbits.LATB0 = 1; // SS high
 
   // setup EUSART
   RC6PPS = 0x0F; // TX1 on RC6
@@ -239,18 +319,9 @@ void init()
   TXSTA1bits.BRGH = 1;
   BAUDCON1bits.BRG16 = 1;
   //SP1BRG = 68; // 115.2k @ 32 MHz clock
-  SP1BRG = 34; // 230.4k @ 22 MHz clock
+  SP1BRG = 34; // 230.4k @ 32 MHz clock
 
-  // setup MSSP for SPI master
-  RB1PPS = 0x17;  // SCK2
-  RB2PPS = 0x18;  // SDO2
-  //SSP2CON1bits.SSPM = 0b1010; // SPI master, use SSP2ADD for BRG
-  //SSP2ADDbits.SSPADD = 0x4f; // 100 kHz SPI @ 32 MHz clock
-  SSP2CON1bits.SSPM = 0b0000 // SPI master, 8 MHz @ 32 MHz clock
-    SSP2CON1bits.SSPEN = 1; // enable MSSP
-  SSP2CON1bits.CKP = 0; // idle clock low
-  SSP2STATbits.CKE = 1; // transmit on active->idle transition
-  LATBbits.LATB0 = 1; // SS high
+  return;
 
 //#define FREQ_COUNTER_MODE
 #ifdef FREQ_COUNTER_MODE
@@ -310,59 +381,6 @@ void init()
   
   // set LDACn low: DAC loads on rising CSn
   LATCbits.LATC5 = 0;
-}
-
-void putchar(char c)
-{
-  while(!PIR3bits.TX1IF);
-  TX1REG = c;
-}
-
-void send_hex(uint16_t value)
-{
-  char hexchar[16] = {'0', '1', '2', '3', '4', '5', '6', '7',
-                      '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-  putchar('0');
-  putchar('x');
-  putchar(hexchar[(value & 0xf000)>>12]);
-  putchar(hexchar[(value & 0x0f00)>> 8]);
-  putchar(hexchar[(value & 0x00f0)>> 4]);
-  putchar(hexchar[(value & 0x000f)>> 0]);
-  putchar('\n');
-}
-
-void send_ascii_int(uint32_t value)
-{
-  uldiv_t x;
-  uint8_t leading_found = 0;
-  uint32_t place = 1000000000;
-  while (place > 1){
-    x = uldiv(value, place);
-    if (x.quot > 0 || leading_found){
-      leading_found = 1;
-      putchar('0' + x.quot);
-    }
-    value = x.rem;
-    place = place / 10;
-  }
-  putchar('0' + value);
-}
-
-
-char getchar()
-{
-
-  if (RC1STAbits.OERR){
-    RC1STAbits.CREN = 0; // clear overrun error
-    RC1STAbits.CREN = 1; // re-enable RX
-  }
-  while(!PIR3bits.RC1IF);
-  return RC1REG;
-}
-
-uint8_t char_avail()
-{
-  return !PIR3bits.RC1IF;
 }
 
 uint8_t timer1_overflow_count;
@@ -484,147 +502,125 @@ uint32_t measure_gated_osc(void)
 }
 
 
-void set_delay(uint16_t value)
+int16_t DAC_to_V(uint16_t counts)
 {
-  LATD = value & 0xff;
-  LATE = (LATE & 0xfc) | ((value >> 8) & 0x03);
+  float voltage = 1.024f * (-2.f + 5.f * counts/4095.f); 
+  return (int)(1000 * voltage);
 }
 
-// Write to MCP4921 DAC
-// !!! note: speed this up by tying off LDAC outside this routine
-// !!!       use falling edge of CSn instead
-void set_DAC(uint16_t value)
+void internal_SAR()
 {
-  // lower CSn
-  LATBbits.LATB0 = 0;
-  
-  SSP2BUF = 0b00110000 | ((value & 0x0f00) >> 8);
-  while(!SSP2STATbits.BF);
-  SSP2BUF = value & 0xff;
-  while(!SSP2STATbits.BF);
+  uint16_t delay_step = 1;
+  uint8_t oversample = 64;
+ 
+  init_single_sample();
 
-  // raise CSn
-  LATBbits.LATB0 = 1;
+  while(1){
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
+      set_delay(delay_idx);
+      uint16_t idx = 2047;
+      uint16_t step = 1024;
+      while (step > 0){
+        set_DAC(idx);
+        __delay_us(10);
+        uint8_t count = 0;
+        for (uint8_t i=0; i<oversample; i++){
+          uint8_t sample = internal_clock_single_sample();
+          count += sample;
+        }
+        if (count > (oversample>>1)){
+          idx += step;
+        } else {
+          idx -= step;
+        }
+        step >>= 1;
+      }
+        
+      send_ascii_int(delay_idx);
+      putchar(' ');
+      send_ascii_int(DAC_to_V(idx));
+      putchar('\n');
+    }
+  }
 }
+
+
+void internal_mode()
+{
+  uint16_t dac_step = 1;
+  uint16_t delay_step = 1;
+ 
+  init_single_sample();
+
+  while(1){
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
+      set_delay(delay_idx);
+      uint16_t count = 0;
+      for (uint16_t i=0; i<4096; i+=dac_step){
+        set_DAC(i);
+        __delay_us(10);
+        uint8_t sample = internal_clock_single_sample();
+        count += sample;
+      }
+    
+      send_ascii_int(delay_idx);
+      putchar(' ');
+      send_ascii_int(DAC_to_V(dac_step*count));
+//#define VISUAL
+#ifdef VISUAL
+      uint16_t len = 1+(dac_step*count/16);
+      for (uint8_t i = 0; i < len; i++){
+        putchar(' ');
+      }
+      putchar('*');
+#endif
+      putchar('\n');
+    }
+  }
+}
+
+void external_mode()
+{
+  select_clock_source(CS_EXTERNAL);
+
+  uint16_t dac_step = 8;
+  uint16_t delay_step = 8;
+  uint8_t oversample = 1;
+
+  while(1){
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
+      set_delay(delay_idx);
+      uint16_t count = 0;
+      for (uint16_t i=0; i<4096; i+=dac_step){
+        set_DAC(i);
+        __delay_us(10);
+        for (uint8_t j=0; j<(1<<oversample); j++){
+          while(!PORTBbits.RB4);
+          while(PORTBbits.RB4);
+          count += PORTBbits.RB3;
+        } 
+      }
+    
+      send_ascii_int(delay_idx);
+      putchar(' ');
+      send_ascii_int(DAC_to_V((dac_step*count)>>oversample));
+#define VISUAL
+#ifdef VISUAL
+      uint16_t len = 1+((dac_step*count/16)>>oversample);
+      for (uint8_t i = 0; i < len; i++){
+        putchar(' ');
+      }
+      putchar('*');
+#endif
+      putchar('\n');
+    }
+  }
+}
+
 
 void main(void) {
   init();
-
-//#define MEASURE_DIGITAL
-//#define MEASURE_ANALOG
-//#define MEASURE_BOTH
-#define TEST_TEMP_COMP
-
-#ifdef MEASURE_DIGITAL
-  while(1){
-    for (uint16_t delay_val = 0 ; delay_val < 1024; delay_val++){
-      uint16_t tune_val = 0;
-      set_fine_tune(tune_val);
-      set_delay(delay_val);
-      send_ascii_int(delay_val);
-      putchar(' ');
-      send_ascii_int(tune_val);
-      putchar(' ');
-      uint32_t freq = measure_gated_osc();
-      send_ascii_int(freq);
-      putchar(' ');
-      uint16_t t = measure_temperature();
-      send_ascii_int(t);
-      putchar('\n');
-    }
-  }
-#endif // MEASURE_DIGITAL
-
-
-#ifdef MEASURE_ANALOG
-  while(1){
-    for (uint16_t tune_val = 0 ; tune_val < 4096; tune_val++){
-      uint16_t delay_val = 0;
-      set_fine_tune(tune_val);
-      set_delay(delay_val);
-      send_ascii_int(delay_val);
-      putchar(' ');
-      send_ascii_int(tune_val);
-      putchar(' ');
-      uint32_t freq = measure_gated_osc();
-      send_ascii_int(freq);
-      putchar(' ');
-      uint16_t t = measure_temperature();
-      send_ascii_int(t);
-      putchar(' ');
-      t = external_temperature();
-      send_ascii_int(t);
-      putchar('\n');
-    }
-  }
-#endif // MEASURE_DIGITAL
-
-#ifdef MEASURE_BOTH
-  while(1){
-    for (uint16_t idx = 1; idx <= 1024; idx <<= 1){
-      uint16_t delay_val = idx >> 1;
-      uint16_t tune_val = 0;
-      set_fine_tune(tune_val);
-      set_delay(delay_val);
-      send_ascii_int(delay_val);
-      putchar(' ');
-      send_ascii_int(tune_val);
-      putchar(' ');
-      uint32_t freq = measure_gated_osc();
-      send_ascii_int(freq);
-      putchar(' ');
-      uint16_t t = measure_temperature();
-      send_ascii_int(t);
-      putchar(' ');
-      t = external_temperature();
-      send_ascii_int(t);
-      putchar('\n');
-    }
-    for (uint16_t tune_val = 0 ; tune_val < 4096; tune_val += 100){
-      uint16_t delay_val = 1023;
-      set_fine_tune(tune_val);
-      set_delay(delay_val);
-      send_ascii_int(delay_val);
-      putchar(' ');
-      send_ascii_int(tune_val);
-      putchar(' ');
-      uint32_t freq = measure_gated_osc();
-      send_ascii_int(freq);
-      putchar(' ');
-      uint16_t t = measure_temperature();
-      send_ascii_int(t);
-      putchar(' ');
-      t = external_temperature();
-      send_ascii_int(t);
-      putchar('\n');
-    }
-  }
-#endif // MEASURE_BOTH
-
-#ifdef TEST_TEMP_COMP
-  while(1){
-    uint16_t t = external_temperature();
-    int16_t idx = (t-3800);
-    if (idx > 399) idx = 399;
-    if (idx < 0) idx = 0;
-    uint16_t tune_val = temp_comp_LUT[idx];
-    set_fine_tune(tune_val);
-    uint16_t delay_val = 1023;
-    set_delay(delay_val);
-    send_ascii_int(delay_val);
-    putchar(' ');
-    send_ascii_int(tune_val);
-    putchar(' ');
-    uint32_t freq = measure_gated_osc();
-    send_ascii_int(freq);
-    putchar(' ');
-    uint16_t int_t = measure_temperature();
-    send_ascii_int(int_t);
-    putchar(' ');
-    send_ascii_int(t);
-    putchar('\n');
-  }
-#endif // TEST_TEMP_COMP
+  internal_SAR();
 
   return;
 }

@@ -42,7 +42,7 @@ intentry CODE 0 4 4 E 2
 bssBANK0 BANK0 1 6F 6F 1 1
 idataBANK1 CODE 0 8DD 8DD 10 2
 dataBANK1 BANK1 1 C8 C8 10 1
-$/tmp/xcXAOo68C.o
+$/tmp/xcXmj3SFI.o
 reset_vec CODE 0 0 0 2 2
 end_init CODE 0 12 12 2 2
 config CONFIG 0 8007 8007 5 2
@@ -179,37 +179,37 @@ STRING 1000-3FFF 2
 # All other numeric values are in decimal.
 %LINETAB
 $dist/default/production/pic16f15376-bringup.X.production.o
-14 cinit CODE >2277:/tmp/xcXPug8sL
-14 cinit CODE >2280:/tmp/xcXPug8sL
-14 cinit CODE >2319:/tmp/xcXPug8sL
-15 cinit CODE >2320:/tmp/xcXPug8sL
-16 cinit CODE >2321:/tmp/xcXPug8sL
-17 cinit CODE >2322:/tmp/xcXPug8sL
-18 cinit CODE >2323:/tmp/xcXPug8sL
-19 cinit CODE >2324:/tmp/xcXPug8sL
-1A cinit CODE >2325:/tmp/xcXPug8sL
-1B cinit CODE >2326:/tmp/xcXPug8sL
-1C cinit CODE >2327:/tmp/xcXPug8sL
-1D cinit CODE >2328:/tmp/xcXPug8sL
-1E cinit CODE >2329:/tmp/xcXPug8sL
-1F cinit CODE >2330:/tmp/xcXPug8sL
-22 cinit CODE >2334:/tmp/xcXPug8sL
-23 cinit CODE >2335:/tmp/xcXPug8sL
-24 cinit CODE >2336:/tmp/xcXPug8sL
-25 cinit CODE >2337:/tmp/xcXPug8sL
-26 cinit CODE >2338:/tmp/xcXPug8sL
-27 cinit CODE >2339:/tmp/xcXPug8sL
-28 cinit CODE >2340:/tmp/xcXPug8sL
-29 cinit CODE >2341:/tmp/xcXPug8sL
-2A cinit CODE >2342:/tmp/xcXPug8sL
-2B cinit CODE >2343:/tmp/xcXPug8sL
-2C cinit CODE >2344:/tmp/xcXPug8sL
-2D cinit CODE >2345:/tmp/xcXPug8sL
-2F cinit CODE >2350:/tmp/xcXPug8sL
-30 cinit CODE >2356:/tmp/xcXPug8sL
-30 cinit CODE >2358:/tmp/xcXPug8sL
-31 cinit CODE >2359:/tmp/xcXPug8sL
-32 cinit CODE >2360:/tmp/xcXPug8sL
+14 cinit CODE >2277:/tmp/xcXDQF5DE
+14 cinit CODE >2280:/tmp/xcXDQF5DE
+14 cinit CODE >2319:/tmp/xcXDQF5DE
+15 cinit CODE >2320:/tmp/xcXDQF5DE
+16 cinit CODE >2321:/tmp/xcXDQF5DE
+17 cinit CODE >2322:/tmp/xcXDQF5DE
+18 cinit CODE >2323:/tmp/xcXDQF5DE
+19 cinit CODE >2324:/tmp/xcXDQF5DE
+1A cinit CODE >2325:/tmp/xcXDQF5DE
+1B cinit CODE >2326:/tmp/xcXDQF5DE
+1C cinit CODE >2327:/tmp/xcXDQF5DE
+1D cinit CODE >2328:/tmp/xcXDQF5DE
+1E cinit CODE >2329:/tmp/xcXDQF5DE
+1F cinit CODE >2330:/tmp/xcXDQF5DE
+22 cinit CODE >2334:/tmp/xcXDQF5DE
+23 cinit CODE >2335:/tmp/xcXDQF5DE
+24 cinit CODE >2336:/tmp/xcXDQF5DE
+25 cinit CODE >2337:/tmp/xcXDQF5DE
+26 cinit CODE >2338:/tmp/xcXDQF5DE
+27 cinit CODE >2339:/tmp/xcXDQF5DE
+28 cinit CODE >2340:/tmp/xcXDQF5DE
+29 cinit CODE >2341:/tmp/xcXDQF5DE
+2A cinit CODE >2342:/tmp/xcXDQF5DE
+2B cinit CODE >2343:/tmp/xcXDQF5DE
+2C cinit CODE >2344:/tmp/xcXDQF5DE
+2D cinit CODE >2345:/tmp/xcXDQF5DE
+2F cinit CODE >2350:/tmp/xcXDQF5DE
+30 cinit CODE >2356:/tmp/xcXDQF5DE
+30 cinit CODE >2358:/tmp/xcXDQF5DE
+31 cinit CODE >2359:/tmp/xcXDQF5DE
+32 cinit CODE >2360:/tmp/xcXDQF5DE
 4 intentry CODE >204:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 6 intentry CODE >206:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 9 intentry CODE >207:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
@@ -744,20 +744,20 @@ B72 text3 CODE >183:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringu
 944 maintext CODE >367:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 951 maintext CODE >368:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
 953 maintext CODE >369:/home/tyapo/devel/checkout/mplab-projects/pic16f15376-bringup.X/bringup.c
-8C1 inittext CODE >2302:/tmp/xcXPug8sL
-8C1 inittext CODE >2303:/tmp/xcXPug8sL
-8C2 inittext CODE >2304:/tmp/xcXPug8sL
-8C2 inittext CODE >2305:/tmp/xcXPug8sL
-8C3 inittext CODE >2306:/tmp/xcXPug8sL
-8C4 inittext CODE >2307:/tmp/xcXPug8sL
-8C5 inittext CODE >2308:/tmp/xcXPug8sL
-8C6 inittext CODE >2309:/tmp/xcXPug8sL
-8C7 inittext CODE >2310:/tmp/xcXPug8sL
-8C8 inittext CODE >2311:/tmp/xcXPug8sL
-8C9 inittext CODE >2312:/tmp/xcXPug8sL
-8CA inittext CODE >2313:/tmp/xcXPug8sL
-8CB inittext CODE >2315:/tmp/xcXPug8sL
-8CC inittext CODE >2314:/tmp/xcXPug8sL
+8C1 inittext CODE >2302:/tmp/xcXDQF5DE
+8C1 inittext CODE >2303:/tmp/xcXDQF5DE
+8C2 inittext CODE >2304:/tmp/xcXDQF5DE
+8C2 inittext CODE >2305:/tmp/xcXDQF5DE
+8C3 inittext CODE >2306:/tmp/xcXDQF5DE
+8C4 inittext CODE >2307:/tmp/xcXDQF5DE
+8C5 inittext CODE >2308:/tmp/xcXDQF5DE
+8C6 inittext CODE >2309:/tmp/xcXDQF5DE
+8C7 inittext CODE >2310:/tmp/xcXDQF5DE
+8C8 inittext CODE >2311:/tmp/xcXDQF5DE
+8C9 inittext CODE >2312:/tmp/xcXDQF5DE
+8CA inittext CODE >2313:/tmp/xcXDQF5DE
+8CB inittext CODE >2315:/tmp/xcXDQF5DE
+8CC inittext CODE >2314:/tmp/xcXDQF5DE
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -787,11 +787,11 @@ __Hstrings 0 0 ABS 0 strings -
 __CFG_WDTCCS$SC 0 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
 _LATD 1B 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
 _LATE 1C 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
-___sp 0 0 STACK 2 stack /tmp/xcXAOo68C.o
+___sp 0 0 STACK 2 stack /tmp/xcXmj3SFI.o
 _init 147C 0 CODE 0 text11 dist/default/production/pic16f15376-bringup.X.production.o
 _main 1256 0 CODE 0 maintext dist/default/production/pic16f15376-bringup.X.production.o
 btemp 7E 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
-start 24 0 CODE 0 init /tmp/xcXAOo68C.o
+start 24 0 CODE 0 init /tmp/xcXmj3SFI.o
 ___flmul@aexp 54 0 BANK0 1 cstackBANK0 dist/default/production/pic16f15376-bringup.X.production.o
 ___flmul@bexp 55 0 BANK0 1 cstackBANK0 dist/default/production/pic16f15376-bringup.X.production.o
 ___flmul@prod 56 0 BANK0 1 cstackBANK0 dist/default/production/pic16f15376-bringup.X.production.o
@@ -809,12 +809,12 @@ __size_of___llmod 0 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.prod
 uldiv@denom 29 0 BANK0 1 cstackBANK0 dist/default/production/pic16f15376-bringup.X.production.o
 __LidataBANK1 0 0 ABS 0 idataBANK1 -
 __Hpowerup 0 0 CODE 0 powerup -
-intlevel0 0 0 ENTRY 0 functab /tmp/xcXAOo68C.o
-intlevel1 0 0 ENTRY 0 functab /tmp/xcXAOo68C.o
-intlevel2 0 0 ENTRY 0 functab /tmp/xcXAOo68C.o
-intlevel3 0 0 ENTRY 0 functab /tmp/xcXAOo68C.o
-intlevel4 0 0 ENTRY 0 functab /tmp/xcXAOo68C.o
-intlevel5 0 0 ENTRY 0 functab /tmp/xcXAOo68C.o
+intlevel0 0 0 ENTRY 0 functab /tmp/xcXmj3SFI.o
+intlevel1 0 0 ENTRY 0 functab /tmp/xcXmj3SFI.o
+intlevel2 0 0 ENTRY 0 functab /tmp/xcXmj3SFI.o
+intlevel3 0 0 ENTRY 0 functab /tmp/xcXmj3SFI.o
+intlevel4 0 0 ENTRY 0 functab /tmp/xcXmj3SFI.o
+intlevel5 0 0 ENTRY 0 functab /tmp/xcXmj3SFI.o
 wtemp0 7E 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
 ___llmod@divisor 71 0 COMMON 1 cstackCOMMON dist/default/production/pic16f15376-bringup.X.production.o
 __Hfunctab 0 0 ENTRY 0 functab -
@@ -847,8 +847,8 @@ __end_of___lldiv 147C 0 CODE 0 text6 dist/default/production/pic16f15376-bringup
 __end_of___llmod 1346 0 CODE 0 text5 dist/default/production/pic16f15376-bringup.X.production.o
 __Umul8_16@multiplicand 71 0 COMMON 1 cstackCOMMON dist/default/production/pic16f15376-bringup.X.production.o
 _set_fine_tune 119A 0 CODE 0 text1 dist/default/production/pic16f15376-bringup.X.production.o
-___stackhi 24CF 0 ABS 0 - /tmp/xcXAOo68C.o
-___stacklo 2088 0 ABS 0 - /tmp/xcXAOo68C.o
+___stackhi 24CF 0 ABS 0 - /tmp/xcXmj3SFI.o
+___stacklo 2088 0 ABS 0 - /tmp/xcXmj3SFI.o
 __CFG_SAFEN$OFF 0 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
 _CLKRCLKbits 896 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
 __LidataBIGRAM 0 0 ABS 0 idataBIGRAM -
@@ -883,7 +883,7 @@ __pcstackBANK0 20 0 BANK0 1 cstackBANK0 dist/default/production/pic16f15376-brin
 __pcstackBANK1 A0 0 BANK1 1 cstackBANK1 dist/default/production/pic16f15376-bringup.X.production.o
 _TX1REG 11A 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
 __size_of_putchar 0 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
-___int_sp 0 0 STACK 2 stack /tmp/xcXAOo68C.o
+___int_sp 0 0 STACK 2 stack /tmp/xcXmj3SFI.o
 __end_of_external_temperature 19C2 0 CODE 0 text12 dist/default/production/pic16f15376-bringup.X.production.o
 __Hbank0 0 0 ABS 0 bank0 -
 __Hbank1 0 0 ABS 0 bank1 -
@@ -1143,7 +1143,7 @@ __CFG_BOREN$ON 0 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.product
 __end_of_set_fine_tune 11BA 0 CODE 0 text1 dist/default/production/pic16f15376-bringup.X.production.o
 __Lintentry 8 0 CODE 0 intentry -
 ___lldiv@divisor 71 0 COMMON 1 cstackCOMMON dist/default/production/pic16f15376-bringup.X.production.o
-reset_vec 0 0 CODE 0 reset_vec /tmp/xcXAOo68C.o
+reset_vec 0 0 CODE 0 reset_vec /tmp/xcXmj3SFI.o
 __end_of___xxtofl FF0 0 CODE 0 text14 dist/default/production/pic16f15376-bringup.X.production.o
 __end_of_putchar 1000 0 CODE 0 text7 dist/default/production/pic16f15376-bringup.X.production.o
 __size_of_measure_temperature 0 0 ABS 0 - dist/default/production/pic16f15376-bringup.X.production.o
