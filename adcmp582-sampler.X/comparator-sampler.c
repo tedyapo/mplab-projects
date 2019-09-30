@@ -239,11 +239,11 @@ void init()
 {
   // setup ports
   // PORTA unused
-  TRISA = 0xff;
+  TRISA = 0b11110111;
   ANSELA = 0x00;
   WPUA = 0x00;
   ODCONA = 0x00;
-  SLRCONA = 0x00;
+  SLRCONA = 0x08;
   INLVLA = 0xff;
   
   // RB0: VREF-CS
@@ -319,7 +319,9 @@ void init()
   TXSTA1bits.BRGH = 1;
   BAUDCON1bits.BRG16 = 1;
   //SP1BRG = 68; // 115.2k @ 32 MHz clock
-  SP1BRG = 34; // 230.4k @ 32 MHz clock
+  //SP1BRG = 34; // 230.4k @ 32 MHz clock
+  SP1BRG = 17; // 460.8k @ 32 MHz clock]
+  //SP1BRG = 3; // 2457600 @ 32 MHz clock]
 
   return;
 
@@ -505,33 +507,32 @@ uint32_t measure_gated_osc(void)
 int16_t DAC_to_V(uint16_t counts)
 {
   float voltage = 1.024f * (-2.f + 5.f * counts/4095.f); 
-  return (int)(1000 * voltage);
+  return (int)(10000 * voltage);
 }
 
 void internal_SAR()
 {
   uint16_t delay_step = 1;
-  uint8_t oversample = 64;
+  uint8_t oversample = 2;
  
   init_single_sample();
 
   while(1){
     for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
+//    for (uint16_t delay_idx=200; delay_idx<350; delay_idx+=delay_step){
       set_delay(delay_idx);
-      uint16_t idx = 2047;
-      uint16_t step = 1024;
+      uint16_t idx = 0;
+      uint16_t step = 2047;
       while (step > 0){
-        set_DAC(idx);
+        set_DAC(idx+step);
         __delay_us(10);
         uint8_t count = 0;
         for (uint8_t i=0; i<oversample; i++){
           uint8_t sample = internal_clock_single_sample();
           count += sample;
         }
-        if (count > (oversample>>1)){
+        if (count >= (oversample>>1)){
           idx += step;
-        } else {
-          idx -= step;
         }
         step >>= 1;
       }
@@ -539,6 +540,7 @@ void internal_SAR()
       send_ascii_int(delay_idx);
       putchar(' ');
       send_ascii_int(DAC_to_V(idx));
+//      send_ascii_int(idx);
       putchar('\n');
     }
   }
@@ -617,10 +619,163 @@ void external_mode()
   }
 }
 
+void eye_diagram()
+{
+  select_clock_source(CS_EXTERNAL);
+
+  uint16_t dac_step = 1;
+  uint16_t delay_step = 1;
+  uint8_t oversample = 1;
+
+  LATAbits.LATA3 = 0;
+  while(1){
+  for (uint8_t pattern=0; pattern<127; pattern++){
+
+    // advance pattern
+    LATAbits.LATA3 = 1;
+    LATAbits.LATA3 = 0;
+
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
+      set_delay(delay_idx);
+      uint16_t count = 0;
+      for (uint16_t i=0; i<4096; i+=dac_step){
+        set_DAC(i);
+        __delay_us(10);
+        for (uint8_t j=0; j<(1<<oversample); j++){
+          while(!PORTBbits.RB4);
+          while(PORTBbits.RB4);
+          count += PORTBbits.RB3;
+        } 
+      }
+ 
+      send_ascii_int(pattern);
+      putchar(' ');
+      send_ascii_int(delay_idx);
+      putchar(' ');
+      send_ascii_int(DAC_to_V((dac_step*count)>>oversample));
+#define VISUAL
+#ifdef VISUAL
+      uint16_t len = 1+((dac_step*count/16)>>oversample);
+      for (uint8_t i = 0; i < len; i++){
+        putchar(' ');
+      }
+      putchar('*');
+#endif
+      putchar('\n');
+    }
+  }
+  }
+}
+
+void eye_diagram_fast()
+{
+  select_clock_source(CS_EXTERNAL);
+
+  static uint16_t foo[2];
+  static uint16_t counts[257];
+
+  LATAbits.LATA3 = 0;
+  while(1){
+  for (uint8_t pattern=0; pattern<127; pattern++){
+
+    // advance pattern
+    LATAbits.LATA3 = 1;
+    LATAbits.LATA3 = 0;
+
+    for (uint16_t base_idx=0; base_idx<1024; base_idx+=256){
+      for (uint16_t j=0; j<256; j++){
+        counts[j] = 0;
+      }
+      for (uint16_t i=0; i<4096; i++){
+        set_LED(1);
+        set_DAC(i);
+        __delay_us(1000);
+        set_LED(0);
+        for (uint16_t delay_idx=0; delay_idx<256; delay_idx++){
+          set_delay(base_idx + delay_idx);
+          while(!PORTBbits.RB4);
+          while(PORTBbits.RB4);
+          counts[delay_idx] += PORTBbits.RB3; 
+        }
+      }
+ 
+      for (uint16_t idx=0; idx<256; idx++){
+        send_ascii_int(pattern);
+        putchar(' ');
+        send_ascii_int(base_idx+idx);
+        putchar(' ');
+        send_ascii_int(DAC_to_V(counts[idx]));
+#define VISUAL
+#ifdef VISUAL
+        uint16_t len = 1+(counts[idx]/16);
+        for (uint8_t i = 0; i < len; i++){
+          putchar(' ');
+        }
+        putchar('*');
+#endif
+        putchar('\n');
+      }
+    }
+  }
+  }
+}
+
+
+void external_SAR_eye()
+{
+  uint16_t delay_step = 1;
+  uint8_t oversample = 32;
+
+  select_clock_source(CS_EXTERNAL);
+
+  LATAbits.LATA3 = 0;
+  uint16_t pattern = 0;
+  while(1){
+    // advance pattern
+    LATAbits.LATA3 = 1;
+    LATAbits.LATA3 = 0;
+    pattern++;
+    
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
+      set_delay(delay_idx);
+      uint16_t idx = 2047;
+      uint16_t step = 1024;
+      while (step > 0){
+        set_DAC(idx);
+        __delay_us(10);
+        uint8_t count = 0;
+        for (uint8_t i=0; i<oversample; i++){
+          while(!PORTBbits.RB4);
+          while(PORTBbits.RB4);
+          count += PORTBbits.RB3; 
+        }
+        if (count >= (oversample>>1)){
+          idx += step;
+        } else {
+          idx -= step;
+        }
+        step >>= 1;
+      }
+
+      send_ascii_int(pattern);
+      putchar(' ');  
+      send_ascii_int(delay_idx);
+      putchar(' ');
+      send_ascii_int(DAC_to_V(idx));
+      putchar('\n');
+    }
+  }
+}
+
+
 
 void main(void) {
   init();
+  for(uint16_t i=0; i<5000; i++){
+    __delay_us(1000);
+  }
   internal_SAR();
-
+//  eye_diagram_fast();
+//  external_SAR_eye();
   return;
 }
