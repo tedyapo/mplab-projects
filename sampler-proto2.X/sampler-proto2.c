@@ -362,7 +362,8 @@ void init()
   BAUDCON1bits.BRG16 = 1;
 //  SP1BRG = 138; // 115200 @ 64 MHz clock
 //  SP1BRG = 34; // 460.8k @ 64 MHz clock
-  SP1BRG = 16; // 921600 @ 64 MHz clock
+//  SP1BRG = 16; // 921600 @ 64 MHz clock
+  SP1BRG = 7; // 2 Mbaud @ 64 MHz clock
 
   // set LDAC low: DAC loads on rising CSn
   LATFbits.LATF2 = 0; // FTUNE-LDACn
@@ -540,7 +541,7 @@ uint32_t measure_gated_osc(gate_time_t gate_time)
 }
 
 
-int16_t DAC_to_V(uint16_t counts)
+int16_t DAC_to_V(float counts)
 {
   //float voltage = 1.024f * (-2.f + 4.f * counts/4095.f); 
   //float voltage = 1.191221e-8f*(84992.f*counts - 171756585.f);
@@ -584,7 +585,7 @@ void internal_averaged_SAR()
   while(1){
     calibrate_timebase();
     select_clock_source(CS_INTERNAL);
-    for (uint16_t delay_idx=593; delay_idx<693; delay_idx+=delay_step){
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
       set_timebase(delay_idx);
       float sum = 0;
       for (uint8_t i=0; i<oversample; i++){
@@ -601,7 +602,7 @@ void internal_averaged_SAR()
         }
         sum += idx;
       }
-      uint16_t idx = sum/oversample;
+      float idx = sum/oversample;
         
       send_ascii_int(delay_idx);
       putchar(' ');
@@ -632,7 +633,7 @@ void external_averaged_SAR()
   while(1){
     calibrate_timebase();
     select_clock_source(CS_EXTERNAL);
-    for (uint16_t delay_idx=275; delay_idx<375; delay_idx+=delay_step){
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
       set_timebase(delay_idx);
       float sum = 0;
       for (uint8_t i=0; i<oversample; i++){
@@ -673,14 +674,14 @@ void external_averaged_SAR()
 void internal_SAR()
 {
   uint16_t delay_step = 1;
-  uint8_t oversample = 50;
+  uint8_t oversample = 11;
  
   select_clock_source(CS_INTERNAL);
 
   while(1){
     calibrate_timebase();
     select_clock_source(CS_INTERNAL);
-    for (uint16_t delay_idx=147; delay_idx<247; delay_idx+=delay_step){
+    for (uint16_t delay_idx=0; delay_idx<1024; delay_idx+=delay_step){
       set_timebase(delay_idx);
       uint16_t idx = 0;
       uint16_t step = 2047;
@@ -691,7 +692,7 @@ void internal_SAR()
         for (uint8_t i=0; i<oversample; i++){
           count += internal_clock_sample();
         }
-        if (count >= (oversample>>1)){
+        if (count > (oversample>>1)){
           idx += step;
         }
         step >>= 1;
@@ -720,7 +721,7 @@ void internal_SAR()
 void external_SAR()
 {
   uint16_t delay_step = 1;
-  uint8_t oversample = 1;
+  uint8_t oversample = 10;
  
   while(1){
     calibrate_timebase();
@@ -746,9 +747,9 @@ void external_SAR()
       putchar(' ');
       send_ascii_int(DAC_to_V(idx));
 //      send_ascii_int(idx);
-#define VISUAL
+//#define VISUAL
 #ifdef VISUAL
-      int16_t len = 1+(idx-1670)/8;
+      int16_t len = 1+(idx-2013)/6;
       if (len < 0) len = 0;
       if (len > 45) len = 45;
       for (uint8_t i = 0; i < len; i++){
@@ -883,7 +884,7 @@ void thermal_memory_test(void)
 void calibrate()
 {
   set_FTUNE(660);
-    __delay_us(1000);
+  __delay_us(1000);
   for (uint16_t d=0; d<1024; d++){
     set_delay(0);
     measure_point(0, 0, 0, GATE_TIME_100ms);
@@ -1032,7 +1033,7 @@ void main(void) {
 
   //DC_CAL();
 
-  external_SAR();
+  internal_averaged_SAR();
   //prob_dist();
 
   while(1){
