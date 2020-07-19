@@ -29,7 +29,7 @@
 #pragma config NVMCTRL_REGION_LOCKS = 0xFFFF // Enter Hexadecimal value
 
 
-#include <xc.h>
+#include <sam.h>
 
 void delay()
 {
@@ -38,8 +38,12 @@ void delay()
 
 void main(void) {  
     PORT_REGS->GROUP[0].PORT_DIRSET = PORT_PA00;
+    PORT_REGS->GROUP[0].PORT_DIRSET = PORT_PA28;
+    PORT_REGS->GROUP[0].PORT_OUTSET = PORT_PA00;
+    PORT_REGS->GROUP[0].PORT_OUTCLR = PORT_PA28;
     while(1){
-        PORT_REGS->GROUP[0].PORT_OUTTGL = PORT_PA00;
+      //        PORT_REGS->GROUP[0].PORT_OUTTGL = PORT_PA00;
+	PORT_REGS->GROUP[0].PORT_OUTTGL = PORT_PA28;
         delay();
     }
     return;

@@ -1,0 +1,13 @@
+/*
+ * File:   main.c
+ * Author: tyapo
+ *
+ * Created on May 31, 2020, 7:52 PM
+ */
+
+
+#include <xc.h>
+
+void main(void) {
+    return;
+}

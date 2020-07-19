@@ -1,0 +1,90 @@
+
+
+Microchip MPLAB XC8 Assembler V2.20 build 20200408173844 
+                                                                                                           Fri Jun 26 13:38:14 2020
+
+
+     1                           	processor	12LF1572
+     2                           	pagewidth 132
+     3                           	psect	udata_shr,global,class=COMMON,space=1,delta=1,noexec
+     4                           	psect	udata,global,class=RAM,space=1,delta=1,noexec
+     5                           	psect	udata_bank0,global,class=BANK0,space=1,delta=1,noexec
+     6                           	psect	udata_bank1,global,class=BANK1,space=1,delta=1,noexec
+     7                           	psect	udata_bank2,global,class=BANK2,space=1,delta=1,noexec
+     8                           	psect	code,global,class=CODE,delta=2
+     9                           	psect	data,global,class=STRCODE,delta=2,noexec
+    10                           	psect	main_loop_text,local,class=CODE,delta=2
+    11                           	psect	pa_nodes0,global,class=CODE,delta=2
+    12                           
+    13 ;;;
+    14 ;;; main_loop.asm: decade-flashlight-v2
+    15 ;;;
+    16  007F                     
+    17                           	psect	data
+    18  0000                     stk_offset	set	0
+    19  0000                     auto_size	set	0
+    20                           
+    21                           ; stack_auto defines a symbol /name/_offset which equates to the
+    22                           ; stack offset of the auto object in question
+    23  0000                     
+    24                           ; stack_param defines a symbol /name/_offset which equates to the
+    25                           ; stack offset of the parameter object in question
+    26  0000                     
+    27                           ; alloc_stack adjusts the SP to allocate space for auto objects
+    28                           ; it also links in to the btemp symbol so that can be used
+    29  0000                     
+    30                           ; restore_stack adjusts the SP to remove all auto and parameter
+    31                           ; objects from the stack prior to returning from a function
+    32  0000                     
+    33 ;;;
+    34 ;;; LED pulse spacing macro -- add NOPs between pulses to recapture
+    35 ;;; energy in LC ringing
+    36 ;;;
+    37  0000                     
+    38                           	psect	main_loop_text
+    39  05DE                     _main_loop:	
+    40 ;;;
+    41 ;;; external unit16_t: 65536 - _reset_count flashes before auto reset
+    42 ;;;
+    43 ;;;
+    44 ;;; flashlight main loop: wake from sleep based on PWM1 period interrupts
+    45 ;;; if awakened by WDT, reset immediately
+    46 ;;; else, reset after set number of flashes
+    47 ;;;
+    48                           
+    49  05DE  0022               	banksel	268
+    50  05DF  168C               	bsf	268,5	; begin inductor current ramp
+    51  05E0  128C               	bcf	268,5	; end inductor current ramp
+    52  05E1  0000               	nop
+    53  05E2  168C               	bsf	268,5	; begin inductor current ramp
+    54  05E3  128C               	bcf	268,5	; end inductor current ramp
+    55  05E4  0000               	nop
+    56  05E5  168C               	bsf	268,5	; begin inductor current ramp
+    57  05E6  128C               	bcf	268,5	; end inductor current ramp
+    58  05E7  0000               	nop
+    59  05E8  168C               	bsf	268,5	; begin inductor current ramp
+    60  05E9  128C               	bcf	268,5	; end inductor current ramp
+    61  05EA  0000               	nop
+    62  05EB  168C               	bsf	268,5	; begin inductor current ramp
+    63  05EC  128C               	bcf	268,5	; end inductor current ramp
+    64  05ED  0000               	nop
+    65  05EE  168C               	bsf	268,5	; begin inductor current ramp
+    66  05EF  128C               	bcf	268,5	; end inductor current ramp
+    67  05F0  0063               	sleep	; sleep; wake by PWM1 or WDT
+    68  05F1  1E03               	btfss	3,4	; if awakened by WDT, something is wrong
+    69  05F2  0001               	reset	; so, reset immediately
+    70  05F3  003B               	banksel	3485
+    71  05F4  101D               	bcf	29,0	; clear PWM1 interrupt flag
+    72  05F5  0020               	banksel	_reset_count
+    73  05F6  0FB6               	incfsz	_reset_count,f	; increment low byte of reset count
+    74  05F7  2DDE               	bra	_main_loop	; continue loop if no overflow
+    75  05F8  0FB7               	incfsz	_reset_count+1,f	; increment high byte of reset count
+    76  05F9  2DDE               	bra	_main_loop	; continue loop if no overflow
+    77  05FA  0001               	reset	; reset flash count met: reset/re-init
+
+
+Microchip Technology PIC Macro Assembler V2.20 build 20200408173844 
+Symbol Table                                                                                               Fri Jun 26 13:38:14 2020
+
+                            LATA 010C                            STATUS 0003                          PWM1INTF 0D9D  
+                      _main_loop 05DE                      _reset_count 0036  

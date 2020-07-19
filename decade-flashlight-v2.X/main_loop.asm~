@@ -1,0 +1,8 @@
+;;;
+;;; main_loop.asm: decade-flashlight-v2
+;;;
+
+#include <xc.inc>  
+#include <pic12lf1572.inc>
+
+        

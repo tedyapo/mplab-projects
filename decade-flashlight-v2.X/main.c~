@@ -1,0 +1,30 @@
+/*
+ * File:   main.c
+ * Author: tyapo
+ *
+ * Created on June 19, 2020, 11:01 AM
+ */
+
+// PIC12LF1572 Configuration Bit Settings
+// CONFIG1
+#pragma config FOSC = INTOSC    //  (INTOSC oscillator; I/O function on CLKIN pin)
+#pragma config WDTE = OFF       // Watchdog Timer Enable (WDT disabled)
+#pragma config PWRTE = ON       // Power-up Timer Enable (PWRT enabled)
+#pragma config MCLRE = OFF      // MCLR Pin Function Select (MCLR/VPP pin function is digital input)
+#pragma config CP = ON          // Flash Program Memory Code Protection (Program memory code protection is enabled)
+#pragma config BOREN = OFF      // Brown-out Reset Enable (Brown-out Reset disabled)
+#pragma config CLKOUTEN = ON    // Clock Out Enable (CLKOUT function is enabled on the CLKOUT pin)
+
+// CONFIG2
+#pragma config WRT = ALL        // Flash Memory Self-Write Protection (000h to 7FFh write protected, no addresses may be modified by EECON control)
+#pragma config PLLEN = OFF      // PLL Enable (4x PLL disabled)
+#pragma config STVREN = OFF     // Stack Overflow/Underflow Reset Enable (Stack Overflow or Underflow will not cause a Reset)
+#pragma config BORV = HI        // Brown-out Reset Voltage Selection (Brown-out Reset Voltage (Vbor), high trip point selected.)
+#pragma config LPBOREN = ON     // Low Power Brown-out Reset enable bit (LPBOR is enabled)
+#pragma config LVP = OFF        // Low-Voltage Programming Enable (High-voltage on MCLR/VPP must be used for programming)
+
+#include <xc.h>
+
+void main(void) {
+    return;
+}

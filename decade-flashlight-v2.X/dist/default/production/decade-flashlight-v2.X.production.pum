@@ -1,0 +1,28 @@
+
+Psect Usage Map:
+
+ Psect      | Contents                         | Memory Range  | Size
+------------|----------------------------------|---------------|-------------
+ reset_vec  | Reset vector                     | 0000h - 0000h |   1 word   
+ end_init   | Initialization code              | 0001h - 0001h |   1 word   
+ text5      | Program and library code         | 05A8h - 05C2h |  1B words  
+ text1      | Program and library code         | 05C3h - 05DDh |  1B words  
+ main_loop_ |                                  | 05DEh - 05FAh |  1D words  
+ text3      | Program and library code         | 05FBh - 0622h |  28 words  
+ text2      | Program and library code         | 0623h - 064Eh |  2C words  
+ text6      | Program and library code         | 064Fh - 067Dh |  2F words  
+ text7      | Program and library code         | 067Eh - 06CEh |  51 words  
+ text4      | Program and library code         | 06CFh - 0750h |  82 words  
+ maintext   | Program code for main() function | 0751h - 07FAh |  AA words  
+ cinit      | Initialization code              | 07FBh - 07FFh |   5 words  
+------------|----------------------------------|---------------|-------------
+ cstackCOMM | Stack in common memory           | 0070h - 007Bh |   C bytes  
+            |                                  |               |             
+ cstackBANK | Stack in bank 0                  | 0020h - 0035h |  16 bytes  
+ bssBANK0   | BSS variables in bank 0          | 0036h - 0037h |   2 bytes  
+            |                                  |               |             
+ abs_s1     | Absolute RAM variables           | 007Eh - 007Fh |   2 bytes  
+------------|----------------------------------|---------------|-------------
+ config     |                                  | 8007h - 8008h |   2 words  
+------------|----------------------------------|---------------|-------------
+
